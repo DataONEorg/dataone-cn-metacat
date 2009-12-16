@@ -1,0 +1,11 @@
+Package: dataone-cn-metacat
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: dataone-cn-os-core
+Suggests:
+Conflicts:
+Installed-Size: 1 kb
+Maintainer: Matt Jones <jones@nceas.ucsb.edu>
+Description: This is a metapackage that installs the metacat dependencies that are needed to build a coordinating node instance.
