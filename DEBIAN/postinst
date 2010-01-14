@@ -164,6 +164,9 @@ echo "Enabling knb site"
 a2dissite knb
 a2ensite knb
 
+## disable the default apache site, which gets in the way of the metacat site 
+a2dissite 000-default
+
 ###############################################################################
 # Configure Postgres
 ###############################################################################
