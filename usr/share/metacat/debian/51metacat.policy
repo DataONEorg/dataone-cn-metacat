@@ -1,0 +1,14 @@
+// ========== Metacat APPLICATION PERMISSIONS ==================================
+
+
+// These permissions are granted by default to the Metacat application
+// ***** CRITICAL *****
+// TODO: These permissions are far too broad -- need to restruct to just metacat
+//
+grant {
+        permission java.security.AllPermission;
+};
+
+//grant codeBase "file:${catalina.home}/webapps/knb/ {
+//        permission java.security.AllPermission;
+//};

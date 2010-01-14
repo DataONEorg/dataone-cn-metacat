@@ -1,0 +1,217 @@
+#!/bin/bash
+
+LONG_DATE=`date +%Y%m%d%H%M%S`
+
+TOMCAT=tomcat6
+TOMCAT_USER=tomcat6
+TOMCAT_HOME=/var/lib/tomcat6
+APACHE_CONF=/etc/apache2
+MOD_JK_CONF=/etc/libapache2-mod-jk
+PG=postgresql-8.4
+PG_CONF=/etc/postgresql/8.4/main
+PG_USER=postgres
+DB_USER=metacat
+DB_PASS=metacat
+SOURCE_DIR=/usr/share/metacat
+SCRIPT_DIR=${SOURCE_DIR}/debian
+METACAT_VAR=/var/metacat
+
+###############################################################################
+# Install metacat war file
+###############################################################################
+
+## Stop tomcat
+echo "Stopping Tomcat"
+/etc/init.d/${TOMCAT} stop
+
+## backup the old war file
+if [ -e ${TOMCAT_HOME}/webapps/knb.war ]
+then
+  echo "Backing up ${TOMCAT_HOME}/webapps/knb.war to ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}"
+  mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}
+fi  
+
+## remove the knb application directory
+if [ -d ${TOMCAT_HOME}/webapps/knb ]
+then
+  echo "Removing the old metacat application directorties"
+  rm -rf ${TOMCAT_HOME}/webapps/knb
+fi 
+
+## copy the new war file into the webapps directory
+echo copying new knb.war file to ${TOMCAT_HOME}/webapps/knb.war
+cp ${SOURCE_DIR}/knb.war ${TOMCAT_HOME}/webapps/knb.war
+
+## expand the war file
+CURR_DIR=`pwd`
+
+## make knb directory and extract knb.war into it.
+echo "Making knb application directory: ${TOMCAT_HOME}/webapps/knb"
+mkdir ${TOMCAT_HOME}/webapps/knb
+cd ${TOMCAT_HOME}/webapps/knb
+
+echo "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
+jar -xvf ${TOMCAT_HOME}/webapps/knb.war > /dev/null
+chown -R ${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
+echo cd to $CURR_DIR
+cd $CURR_DIR
+
+chmod -R  +x ${TOMCAT_HOME}/webapps/knb/cgi-bin
+
+###############################################################################
+# Create Metacat External File Space
+###############################################################################
+
+## Create the /var/metacat directory
+if [ ! -d ${METACAT_VAR} ]
+then
+  echo "Making Metacat utility directory: /var/metacat"
+  mkdir ${METACAT_VAR}
+fi
+
+## Change the ownership of the /var/metacat directory to be the tomcat user.
+echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
+chown -R ${TOMCAT_USER} ${METACAT_VAR}
+
+###############################################################################
+# Configure Tomcat
+###############################################################################
+
+## Change ownership of the tomcat directories to be the tomcat user
+#echo "changing ownership of ${TOMCAT_HOME} to ${TOMCAT_USER}"
+#chown -R ${TOMCAT_USER} ${TOMCAT_HOME} 
+#echo "changing ownership of /var/lib/tomcat5.5 to ${TOMCAT_USER}"
+#chown -R ${TOMCAT_USER} /var/lib/tomcat5.5
+#echo "changing ownership of /etc/tomcat5.5 to ${TOMCAT_USER}"
+#chown -R ${TOMCAT_USER} /etc/tomcat5.5
+#
+## If the tomcat5.5 startup script in the package is different than the one
+## in /etc/init.d, then backup the existing one and copy in the package version.
+#TOMCAT_START_SCRIPT_DIFF=`diff ${SOURCE_DIR}/tomcat5.5 /etc/init.d/tomcat5.5`
+#if [ "$TOMCAT_START_SCRIPT_DIFF" != "" ]
+#then
+  #echo "Backing up /etc/init.d/tomcat5.5 to /etc/init.d/tomcat5.5.${LONG_DATE}"
+  #mv /etc/init.d/tomcat5.5 /etc/init.d/tomcat5.5.${LONG_DATE}
+  #echo "Copying new tomcat5.5 script to /etc/init.d/"
+  #cp ${SOURCE_DIR}/tomcat5.5 /etc/init.d/
+  #echo "Making /etc/init.d/tomcat5.5 executable"
+  #chmod +x /etc/init.d/tomcat5.5
+#fi
+
+# Configure the tomcat server
+cp ${SCRIPT_DIR}/server.xml ${TOMCAT_HOME}/conf/
+
+# Configure the context file
+cp ${SCRIPT_DIR}/knb.xml ${TOMCAT_HOME}/conf/Catalina/localhost/
+
+# Add permissions needed by metacat and geoserver
+cp ${SCRIPT_DIR}/51metacat.policy ${TOMCAT_HOME}/conf/policy.d/
+
+###############################################################################
+# Configure Apache
+###############################################################################
+
+## Stop apache
+echo "Stopping Apache"
+/etc/init.d/apache2 stop
+
+## copy in jk.conf file
+if [ -e ${APACHE_CONF}/mods-available/jk.conf ]
+then 
+  JK_CONF_DIFF=`diff ${SCRIPT_DIR}/jk.conf ${APACHE_CONF}/mods-available/jk.conf`
+  if [ "${JK_CONF_DIFF}" != "" ]
+  then
+    echo "Backing up ${APACHE_CONF}/mods-available/jk.conf to ${APACHE_CONF}/mods-available/jk.conf.${LONG_DATE}"
+    mv ${APACHE_CONF}/mods-available/jk.conf ${APACHE_CONF}/mods-available/jk.conf.${LONG_DATE}
+  fi
+fi
+echo "Copying jk.conf to ${APACHE_CONF}/mods-available/"
+cp ${SCRIPT_DIR}/jk.conf ${APACHE_CONF}/mods-available/
+
+## copy in workers.properties file for mod-jk
+if [ -e ${MOD_JK_CONF}/workers.properties ]
+then 
+  WORKERS_PROPS_DIFF=`diff ${SCRIPT_DIR}/workers.properties ${MOD_JK_CONF}/workers.properties`
+  if [ "${WORKERS_PROPS_DIFF}" != "" ]
+  then
+    echo "Backing up ${MOD_JK_CONF}/workers.properties to ${MOD_JK_CONF}/workers.properties.${LONG_DATE}"
+    mv ${MOD_JK_CONF}/workers.properties ${MOD_JK_CONF}/workers.properties.${LONG_DATE}
+  fi
+fi
+echo "Copying workers.properties to ${MOD_JK_CONF}/"
+cp ${SCRIPT_DIR}/workers.properties ${MOD_JK_CONF}/
+
+## disable and then re-enable mod jk to pick up changes
+echo "Refreshing Mod JK"
+a2dismod jk
+a2enmod jk
+
+## copy in knb site file
+if [ -e ${APACHE_CONF}/sites-available/knb ]
+then 
+  KNB_SITE_DIFF=`diff ${SCRIPT_DIR}/knb ${APACHE_CONF}/sites-available/knb`
+  if [ "${KNB_SITE_DIFF}" != "" ]
+  then
+    echo "Backing up ${APACHE_CONF}/sites-available/knb to ${APACHE_CONF}/sites-available/knb.${LONG_DATE}"
+    mv ${APACHE_CONF}/sites-available/knb ${APACHE_CONF}/sites-available/knb.${LONG_DATE}
+  fi
+fi
+echo "Copying knb site file to ${APACHE_CONF}/sites-available/"
+cp ${SCRIPT_DIR}/knb ${APACHE_CONF}/sites-available/
+
+## enable knb site
+echo "Enabling knb site"
+a2dissite knb
+a2ensite knb
+
+###############################################################################
+# Configure Postgres
+###############################################################################
+
+## modify pg_hba.conf
+PG_HBA_IS_MODIFIED=`grep "metacat metacat" ${PG_CONF}/pg_hba.conf`
+if [ "${PG_HBA_IS_MODIFIED}" == "" ]
+then
+  echo "backing up ${PG_CONF}/pg_hba.conf to ${PG_CONF}/pg_hba.conf.${LONG_DATE}"
+  cp ${PG_CONF}/pg_hba.conf ${PG_CONF}/pg_hba.conf.${LONG_DATE}
+
+  echo "appending 'host metacat metacat 127.0.0.1 255.255.255.255 password' to ${PG_CONF}/pg_hba.conf"
+  echo "host metacat metacat 127.0.0.1 255.255.255.255 password" >> ${PG_CONF}/pg_hba.conf
+fi
+
+## create metacat schema and user
+echo "Creating metacat database schema"
+su ${PG_USER} -c "createdb metacat"
+
+echo "Creating metacat user" 
+su ${PG_USER} -c "psql -c \"CREATE USER ${DB_USER} WITH UNENCRYPTED PASSWORD '${DB_PASS}'\""
+
+## Restart the postgres db
+echo "Restarting postgres database"
+/etc/init.d/${PG} restart
+
+###############################################################################
+# Start Apache and Tomcat
+###############################################################################
+
+## Start Apache
+/etc/init.d/apache2 start
+
+## ugly hack to fix circular dependency bug that will keep tomcat
+## from starting within this script
+#if [ ! -f /etc/java-1.5.0-sun/jvm.cfg ]; then
+#  temp_jvm_cfg=/etc/java-1.5.0-sun/jvm.cfg
+#  mkdir -p /etc/java-1.5.0-sun
+#  printf -- "-server KNOWN\n" > $temp_jvm_cfg
+#fi
+
+## Start Tomcat
+echo "starting Tomcat server"
+
+#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
+#/usr/share/tomcat5.5/bin/startup.sh
+
+/etc/init.d/${TOMCAT} start
+#chmod u+x ${SOURCE_DIR}/delay-tomcat-start
+#${SOURCE_DIR}/delay-tomcat-start &
+

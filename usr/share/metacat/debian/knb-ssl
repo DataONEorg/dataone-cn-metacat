@@ -1,0 +1,34 @@
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+        DocumentRoot /usr/share/tomcat6/webapps/knb
+
+        ScriptAlias /knb/cgi-bin/ /usr/share/tomcat6/webapps/knb/cgi-bin/
+        <Directory "/usr/share/tomcat6/webapps/knb/cgi-bin/">
+                AllowOverride All
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        <IfModule mod_jk.c>
+                JkMount /knb ajp13_worker
+                JkMount /knb/* ajp13_worker
+                JkMount /knb/metacat ajp13_worker
+                JkMount /*.jsp ajp13_worker
+                JkUnMount /knb/cgi-bin/* ajp13_worker
+        </IfModule>
+        #   SSL Engine Switch:
+        #   Enable/Disable SSL for this virtual host.
+
+        SSLEngine on
+        #   A self-signed (snakeoil) certificate can be created by installing
+        #   the ssl-cert package. See
+        #   /usr/share/doc/apache2.2-common/README.Debian.gz for more info.
+        #   If both key and certificate are stored in the same file, only the
+        #   SSLCertificateFile directive is needed.
+        SSLCertificateFile /etc/ssl/certs/<your_cert_name>.crt
+        SSLCertificateKeyFile /etc/ssl/private/<your_cert_name>.key
+
+</VirtualHost>
+</IfModule>
+        
