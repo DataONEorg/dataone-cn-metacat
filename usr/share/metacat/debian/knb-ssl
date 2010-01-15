@@ -1,6 +1,7 @@
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
         DocumentRoot /usr/share/tomcat6/webapps/knb
+        ServerName cn-dev.dataone.org
 
         ScriptAlias /knb/cgi-bin/ /usr/share/tomcat6/webapps/knb/cgi-bin/
         <Directory "/usr/share/tomcat6/webapps/knb/cgi-bin/">
@@ -17,17 +18,15 @@
                 JkMount /*.jsp ajp13_worker
                 JkUnMount /knb/cgi-bin/* ajp13_worker
         </IfModule>
+
         #   SSL Engine Switch:
         #   Enable/Disable SSL for this virtual host.
-
         SSLEngine on
-        #   A self-signed (snakeoil) certificate can be created by installing
-        #   the ssl-cert package. See
-        #   /usr/share/doc/apache2.2-common/README.Debian.gz for more info.
-        #   If both key and certificate are stored in the same file, only the
-        #   SSLCertificateFile directive is needed.
-        SSLCertificateFile /etc/ssl/certs/<your_cert_name>.crt
-        SSLCertificateKeyFile /etc/ssl/private/<your_cert_name>.key
+        SSLOptions +StrictRequire
+
+        SSLCertificateFile /etc/ssl/certs/_.dataone.org.crt
+        SSLCertificateKeyFile /etc/ssl/private/dataone_org.key
+        SSLCertificateChainFile /etc/ssl/certs/gd_intermediate_bundle.crt
 
 </VirtualHost>
 </IfModule>

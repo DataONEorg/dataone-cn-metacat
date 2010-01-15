@@ -7,6 +7,7 @@ TOMCAT_USER=tomcat6
 TOMCAT_HOME=/var/lib/tomcat6
 APACHE_CONF=/etc/apache2
 MOD_JK_CONF=/etc/libapache2-mod-jk
+SITES="knb knb-ssl"
 PG=postgresql-8.4
 PG_CONF=/etc/postgresql/8.4/main
 PG_USER=postgres
@@ -146,23 +147,31 @@ echo "Refreshing Mod JK"
 a2dismod jk
 a2enmod jk
 
-## copy in knb site file
-if [ -e ${APACHE_CONF}/sites-available/knb ]
-then 
-  KNB_SITE_DIFF=`diff ${SCRIPT_DIR}/knb ${APACHE_CONF}/sites-available/knb`
-  if [ "${KNB_SITE_DIFF}" != "" ]
-  then
-    echo "Backing up ${APACHE_CONF}/sites-available/knb to ${APACHE_CONF}/sites-available/knb.${LONG_DATE}"
-    mv ${APACHE_CONF}/sites-available/knb ${APACHE_CONF}/sites-available/knb.${LONG_DATE}
-  fi
-fi
-echo "Copying knb site file to ${APACHE_CONF}/sites-available/"
-cp ${SCRIPT_DIR}/knb ${APACHE_CONF}/sites-available/
+## copy in site configuration files
+for SITE in ${SITES}
+do
+    if [ -e ${APACHE_CONF}/sites-available/${SITE} ]
+    then 
+      SITE_DIFF=`diff ${SCRIPT_DIR}/${SITE} ${APACHE_CONF}/sites-available/${SITE}`
+      if [ "${SITE_DIFF}" != "" ]
+      then
+        echo "Backing up ${APACHE_CONF}/sites-available/${SITE} to ${APACHE_CONF}/sites-available/${SITE}.${LONG_DATE}"
+        mv ${APACHE_CONF}/sites-available/${SITE} ${APACHE_CONF}/sites-available/${SITE}.${LONG_DATE}
+      fi
+    fi
+    echo "Copying ${SITE} site file to ${APACHE_CONF}/sites-available/"
+    cp ${SCRIPT_DIR}/${SITE} ${APACHE_CONF}/sites-available/
 
-## enable knb site
-echo "Enabling knb site"
-a2dissite knb
-a2ensite knb
+    ## enable ${SITE} site
+    echo "Enabling ${SITE} site"
+    a2dissite ${SITE}
+    a2ensite ${SITE}
+done
+
+# Turn on the ssl module
+echo "Refreshing Mod SSL"
+a2dismod ssl
+a2enmod ssl
 
 ## disable the default apache site, which gets in the way of the metacat site 
 a2dissite 000-default
