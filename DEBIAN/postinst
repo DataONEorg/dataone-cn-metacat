@@ -35,7 +35,7 @@ fi
 ## remove the knb application directory
 if [ -d ${TOMCAT_HOME}/webapps/knb ]
 then
-  echo "Removing the old metacat application directorties"
+  echo "Removing the old metacat application directories"
   rm -rf ${TOMCAT_HOME}/webapps/knb
 fi 
 
