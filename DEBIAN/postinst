@@ -100,7 +100,7 @@ chown -R ${TOMCAT_USER} ${METACAT_VAR}
 #fi
 
 # Configure the tomcat server
-cp ${SCRIPT_DIR}/server.xml ${TOMCAT_HOME}/conf/
+#cp ${SCRIPT_DIR}/server.xml ${TOMCAT_HOME}/conf/
 
 # Configure the context file
 cp ${SCRIPT_DIR}/knb.xml ${TOMCAT_HOME}/conf/Catalina/localhost/
