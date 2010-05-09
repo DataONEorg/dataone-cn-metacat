@@ -116,37 +116,6 @@ cp ${SCRIPT_DIR}/51metacat.policy ${TOMCAT_HOME}/conf/policy.d/
 echo "Stopping Apache"
 /etc/init.d/apache2 stop
 
-## copy in jk.conf file
-if [ -e ${APACHE_CONF}/mods-available/jk.conf ]
-then 
-  JK_CONF_DIFF=`diff ${SCRIPT_DIR}/jk.conf ${APACHE_CONF}/mods-available/jk.conf`
-  if [ "${JK_CONF_DIFF}" != "" ]
-  then
-    echo "Backing up ${APACHE_CONF}/mods-available/jk.conf to ${APACHE_CONF}/mods-available/jk.conf.${LONG_DATE}"
-    mv ${APACHE_CONF}/mods-available/jk.conf ${APACHE_CONF}/mods-available/jk.conf.${LONG_DATE}
-  fi
-fi
-echo "Copying jk.conf to ${APACHE_CONF}/mods-available/"
-cp ${SCRIPT_DIR}/jk.conf ${APACHE_CONF}/mods-available/
-
-## copy in workers.properties file for mod-jk
-if [ -e ${MOD_JK_CONF}/workers.properties ]
-then 
-  WORKERS_PROPS_DIFF=`diff ${SCRIPT_DIR}/workers.properties ${MOD_JK_CONF}/workers.properties`
-  if [ "${WORKERS_PROPS_DIFF}" != "" ]
-  then
-    echo "Backing up ${MOD_JK_CONF}/workers.properties to ${MOD_JK_CONF}/workers.properties.${LONG_DATE}"
-    mv ${MOD_JK_CONF}/workers.properties ${MOD_JK_CONF}/workers.properties.${LONG_DATE}
-  fi
-fi
-echo "Copying workers.properties to ${MOD_JK_CONF}/"
-cp ${SCRIPT_DIR}/workers.properties ${MOD_JK_CONF}/
-
-## disable and then re-enable mod jk to pick up changes
-echo "Refreshing Mod JK"
-a2dismod jk
-a2enmod jk
-
 ## copy in site configuration files
 for SITE in ${SITES}
 do
@@ -173,8 +142,6 @@ echo "Refreshing Mod SSL"
 a2dismod ssl
 a2enmod ssl
 
-## disable the default apache site, which gets in the way of the metacat site 
-a2dissite 000-default
 
 ###############################################################################
 # Configure Postgres
