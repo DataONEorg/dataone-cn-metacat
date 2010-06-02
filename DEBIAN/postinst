@@ -53,6 +53,7 @@ cd ${TOMCAT_HOME}/webapps/knb
 
 echo "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
 jar -xvf ${TOMCAT_HOME}/webapps/knb.war > /dev/null
+cp ${SOURCE_DIR}/debian/metacat.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 chown -R ${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
 echo cd to $CURR_DIR
 cd $CURR_DIR
