@@ -55,7 +55,7 @@ echo "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
 jar -xvf ${TOMCAT_HOME}/webapps/knb.war > /dev/null
 cp ${SOURCE_DIR}/debian/metacat.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 
-## replace the token HOSTNAME in the properties file to a hostname beginning with cn- in the /etc/hosts file
+## replace the token HOSTNAME in the properties file to a hostname beginning with cn in the /etc/hosts file
 HOSTNAME=`perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;} END{print $hostname}' /etc/hosts`
 if [${HOSTNAME} != ""]
 then
