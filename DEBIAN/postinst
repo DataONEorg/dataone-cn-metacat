@@ -16,6 +16,7 @@ DB_PASS=metacat
 SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
+DATAONE_LOGS=/var/log/dataone
 
 ###############################################################################
 # Install metacat war file
@@ -24,6 +25,16 @@ METACAT_VAR=/var/metacat
 ## Stop tomcat
 echo "Stopping Tomcat"
 /etc/init.d/${TOMCAT} stop
+## Create the dataone logging directory
+if [ ! -d ${DATAONE_LOGS} ]
+then
+  echo "Making Metacat utility directory: /var/metacat"
+  mkdir ${DATAONE_LOGS}
+fi
+
+## Change the ownership of the /var/metacat directory to be the tomcat user.
+echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
+chown -R ${TOMCAT_USER} ${METACAT_VAR}
 
 ## backup the old war file
 if [ -e ${TOMCAT_HOME}/webapps/knb.war ]
