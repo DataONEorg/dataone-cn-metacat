@@ -30,11 +30,12 @@ if [ ! -d ${DATAONE_LOGS} ]
 then
   echo "Making Metacat utility directory: /var/metacat"
   mkdir ${DATAONE_LOGS}
+  chown ${TOMCAT_USER}.${TOMCAT_USER} ${DATAONE_LOGS}
 fi
 
 ## Change the ownership of the /var/metacat directory to be the tomcat user.
 echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
-chown -R ${TOMCAT_USER} ${METACAT_VAR}
+chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
 
 ## backup the old war file
 if [ -e ${TOMCAT_HOME}/webapps/knb.war ]
@@ -76,7 +77,7 @@ else
 fi
 
 cp ${SOURCE_DIR}/debian/log4j.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
-chown -R ${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
+chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
 echo cd to $CURR_DIR
 cd $CURR_DIR
 
@@ -95,7 +96,7 @@ fi
 
 ## Change the ownership of the /var/metacat directory to be the tomcat user.
 echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
-chown -R ${TOMCAT_USER} ${METACAT_VAR}
+chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
 
 ###############################################################################
 # Configure Tomcat
