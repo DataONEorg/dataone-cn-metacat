@@ -16,7 +16,7 @@ DB_PASS=metacat
 SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
-DATAONE_LOGS=/var/metacat/log
+DATAONE_LOGS=${METACAT_VAR}/log
 
 ###############################################################################
 # Install metacat war file
@@ -27,9 +27,6 @@ echo "Stopping Tomcat"
 /etc/init.d/${TOMCAT} stop
 
 
-## Change the ownership of the /var/metacat directory to be the tomcat user.
-echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
-chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
 
 ## backup the old war file
 if [ -e ${TOMCAT_HOME}/webapps/knb.war ]
@@ -63,7 +60,7 @@ cp ${SOURCE_DIR}/debian/metacat.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
 
 ## replace the token HOSTNAME in the properties file to a hostname beginning with cn in the /etc/hosts file
-HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*$/) {$hostname= $2;} END{print $hostname}' /etc/hosts`
+HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;} END{print $hostname}' /etc/hosts`
 if [ "$HOSTNAME" != "" ]
 then
 	sed -i.bak  's/SERVER_NAME/'${HOSTNAME}'/' ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
@@ -96,8 +93,9 @@ chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
 ## Create the dataone logging directory
 if [ ! -d ${DATAONE_LOGS} ]
 then
-  echo "Making Metacat log directory: /var/metacat/log"
+  echo "Making Metacat log directory: ${DATAONE_LOGS}"
   mkdir ${DATAONE_LOGS}
+  echo "changing ownership of ${DATAONE_LOGS}  to ${TOMCAT_USER}"
   chown ${TOMCAT_USER}.${TOMCAT_USER} ${DATAONE_LOGS}
 fi
 ###############################################################################
