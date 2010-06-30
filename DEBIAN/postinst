@@ -29,7 +29,7 @@ echo "Stopping Tomcat"
 
 
 ## backup the old war file
-if [ -e ${TOMCAT_HOME}/webapps/knb.war ]
+if [ -e ${TOMCAT_HOME}/webapps/knb.war.current ]
 then
   echo "Backing up ${TOMCAT_HOME}/webapps/knb.war to ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}"
   mv ${TOMCAT_HOME}/webapps/knb.war.current ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}
@@ -60,6 +60,7 @@ cp ${SOURCE_DIR}/debian/metacat.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
 
 ## replace the token HOSTNAME in the properties file to a hostname beginning with cn in the /etc/hosts file
+sleep 5
 HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;} END{print $hostname}' /etc/hosts`
 if [ "$HOSTNAME" != "" ]
 then
