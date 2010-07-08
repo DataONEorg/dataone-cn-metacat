@@ -16,8 +16,7 @@ DB_PASS=metacat
 SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
-DATAONE_LOGS=${METACAT_VAR}/log
-
+METACAT_VAR_SUBDIRS=".knb logs inline-data documents expanded-archives temporary"
 ###############################################################################
 # Install metacat war file
 ###############################################################################
@@ -92,13 +91,17 @@ echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
 chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
 
 ## Create the dataone logging directory
-if [ ! -d ${DATAONE_LOGS} ]
-then
-  echo "Making Metacat log directory: ${DATAONE_LOGS}"
-  mkdir ${DATAONE_LOGS}
-  echo "changing ownership of ${DATAONE_LOGS}  to ${TOMCAT_USER}"
-  chown ${TOMCAT_USER}.${TOMCAT_USER} ${DATAONE_LOGS}
-fi
+for SUBDIR in ${METACAT_VAR_SUBDIRS}
+do
+	FULL_VAR_SUBDIR=${METACAT_VAR}/${SUBDIR}
+	if [ ! -d ${FULL_VAR_SUBDIR} ]
+	then
+	  echo "Making Metacat application directory: ${FULL_VAR_SUBDIR}"
+	  mkdir ${FULL_VAR_SUBDIR}
+	  echo "changing ownership of ${FULL_VAR_SUBDIR}  to ${TOMCAT_USER}"
+	  chown ${TOMCAT_USER}.${TOMCAT_USER} ${FULL_VAR_SUBDIR}
+	fi
+done
 ###############################################################################
 # Configure Tomcat
 ###############################################################################
