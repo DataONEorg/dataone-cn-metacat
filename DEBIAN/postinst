@@ -16,7 +16,7 @@ DB_PASS=metacat
 SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
-METACAT_VAR_SUBDIRS=".knb logs inline-data documents expanded-archives temporary"
+METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temporary"
 ###############################################################################
 # Install metacat war file
 ###############################################################################
