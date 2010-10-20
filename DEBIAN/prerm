@@ -1,0 +1,50 @@
+#!/bin/bash
+
+
+LONG_DATE=`date +%Y%m%d%H%M%S`
+
+/etc/init.d/tomcat6 stop
+/etc/init.d/apache2 stop
+
+TOMCAT_USER=tomcat6
+TOMCAT_HOME=/var/lib/tomcat6
+APACHE_CONF=/etc/apache2
+METACAT_VAR=/var/metacat
+SOURCE_DIR=/usr/share/metacat
+PG=postgresql-8.4
+PG_CONF=/etc/postgresql/8.4/main
+
+## drop metacat schema and user
+echo "Droping metacat database"
+su postgres -c "dropdb metacat"
+echo "Droping metacat database use metacat"
+su postgres -c "psql --command \"DROP USER metacat\""
+##pg_hba.conf was modified, we should probably return it to original
+PG_HBA_IS_MODIFIED=`grep "metacat metacat" ${PG_CONF}/pg_hba.conf`
+if [ "${PG_HBA_IS_MODIFIED}" != "" ]
+then
+  rm -f ${PG_CONF}/pg_hba.conf
+
+  cp ${PG_CONF}/pg_hba.conf.* ${PG_CONF}/pg_hba.conf
+
+fi
+## Restart the postgres db
+echo "Restarting postgres database"
+/etc/init.d/${PG} restart
+
+rm -rf ${METACAT_VAR}
+rm -rf ${SOURCE_DIR}
+
+rm -rf ${TOMCAT_HOME}/webapps/knb
+
+rm -f ${TOMCAT_HOME}/webapps/knb*
+rm -f ${TOMCAT_HOME}/conf/Catalina/localhost/knb.xml
+
+rm -f ${TOMCAT_HOME}/conf/policy.d//51metacat.policy
+
+rm -f ${APACHE_CONF}/jk_mount/knb_jk.*
+
+/etc/init.d/tomcat6 start
+/etc/init.d/apache2 start
+
+
