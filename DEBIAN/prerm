@@ -25,8 +25,8 @@ if [ "${PG_HBA_IS_MODIFIED}" != "" ]
 then
   rm -f ${PG_CONF}/pg_hba.conf
   cp ${PG_CONF}/pg_hba.conf.* ${PG_CONF}/pg_hba.conf
-  chown postgres ${PG_CONF}/pg_hba.conf*
-  chgrp postgres pg_hba.conf*
+  chown postgres ${PG_CONF}/pg_hba.conf
+  chgrp postgres ${PG_CONF}/pg_hba.conf
 fi
 ## Restart the postgres db
 echo "Restarting postgres database"
