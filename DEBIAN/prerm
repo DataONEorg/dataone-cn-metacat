@@ -20,20 +20,13 @@ su postgres -c "dropdb metacat"
 echo "Droping metacat database use metacat"
 su postgres -c "psql --command \"DROP USER metacat\""
 ##pg_hba.conf was modified, we should probably return it to original
-PG_HBA_IS_MODIFIED=`grep "metacat metacat" ${PG_CONF}/pg_hba.conf`
-if [ -f ${PG_CONF}/pg_hba.conf.no_metacat ]
+
+if [ -f ${PG_CONF}/pg_hba.conf.bak ]
 then
-<<<<<<< .mine
   rm -f ${PG_CONF}/pg_hba.conf
-
-  mv ${PG_CONF}/pg_hba.conf.no_metacat ${PG_CONF}/pg_hba.conf
-
-=======
-  #rm -f ${PG_CONF}/pg_hba.conf
-  cp ${PG_CONF}/pg_hba.conf.bak ${PG_CONF}/pg_hba.conf
+  mv ${PG_CONF}/pg_hba.conf.bak ${PG_CONF}/pg_hba.conf
   chown postgres ${PG_CONF}/pg_hba.conf
   chgrp postgres ${PG_CONF}/pg_hba.conf
->>>>>>> .r2500
 fi
 ## Restart the postgres db
 echo "Restarting postgres database"
