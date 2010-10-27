@@ -23,8 +23,8 @@ su postgres -c "psql --command \"DROP USER metacat\""
 PG_HBA_IS_MODIFIED=`grep "metacat metacat" ${PG_CONF}/pg_hba.conf`
 if [ "${PG_HBA_IS_MODIFIED}" != "" ]
 then
-  rm -f ${PG_CONF}/pg_hba.conf
-  cp ${PG_CONF}/pg_hba.conf.* ${PG_CONF}/pg_hba.conf
+  #rm -f ${PG_CONF}/pg_hba.conf
+  cp ${PG_CONF}/pg_hba.conf.bak ${PG_CONF}/pg_hba.conf
   chown postgres ${PG_CONF}/pg_hba.conf
   chgrp postgres ${PG_CONF}/pg_hba.conf
 fi

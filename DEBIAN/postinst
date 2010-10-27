@@ -167,8 +167,8 @@ cp ${SCRIPT_DIR}/${JK_CONF} ${APACHE_CONF}/jk_mount/
 PG_HBA_IS_MODIFIED=`grep "metacat metacat" ${PG_CONF}/pg_hba.conf`
 if [ "${PG_HBA_IS_MODIFIED}" == "" ]
 then
-  echo "backing up ${PG_CONF}/pg_hba.conf to ${PG_CONF}/pg_hba.conf.${LONG_DATE}"
-  cp ${PG_CONF}/pg_hba.conf ${PG_CONF}/pg_hba.conf.${LONG_DATE}
+  echo "backing up ${PG_CONF}/pg_hba.conf to ${PG_CONF}/pg_hba.conf.bak
+  cp ${PG_CONF}/pg_hba.conf ${PG_CONF}/pg_hba.conf.bak
   chown postgres ${PG_CONF}/pg_hba.conf
   chgrp postgres ${PG_CONF}/pg_hba.conf
 
