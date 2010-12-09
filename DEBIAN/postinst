@@ -55,15 +55,29 @@ cd ${TOMCAT_HOME}/webapps/knb
 
 echo "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
 jar -xvf ${TOMCAT_HOME}/webapps/knb.war > /dev/null
-cp ${SOURCE_DIR}/debian/metacat.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
+
 mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
 
 ## replace the token HOSTNAME in the properties file to a hostname beginning with cn in the /etc/hosts file
 sleep 5
-HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;} END{print $hostname}' /etc/hosts`
+SHORTHOSTNAME=$(< /etc/hostname)
+HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;exit;} END{print $hostname}' /etc/hosts`
 if [ "$HOSTNAME" != "" ]
 then
-	sed -i.bak  's/SERVER_NAME/'${HOSTNAME}'/' ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+	sed -i.bak  's/\(server\.name\=\)localhost/\1'${HOSTNAME}'/;
+		s/\(application\.deployDir\=\)/\1\/var\/lib\/tomcat6\/webapps/;
+		s/\(application\.backupDir\=\)/\1\/var\/metacat\/\.knb/;
+		s/\(application\.context=\)/\1knb/;
+		s/\(application\.debugOutputFile\=\)\/tmp\/metacat\.debug/\1\/var\/metacat\/temporary\/metacat.debug/;
+		s/\(application\.delimiteredOutputFile\=\)\/tmp\/metacat\.debug\.delimitered/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
+		s/\(database\.user\=\)/\1metacat/;
+		s/\(database\.password\=\)/\1metacat/;
+		s/\(database\.type\=\)/\1postgres/;
+		s/\(database\.driver\=\)/\1org\.postgresql\.Driver/;
+		s/\(database\.adapter\=\)/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
+		s/\(auth\.administrators\=\)/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
+		s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;' \
+		${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
 else
 	echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
 fi
