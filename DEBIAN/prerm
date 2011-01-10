@@ -40,7 +40,7 @@ rm -rf ${TOMCAT_HOME}/webapps/knb
 rm -f ${TOMCAT_HOME}/webapps/knb*
 rm -f ${TOMCAT_HOME}/conf/Catalina/localhost/knb.xml
 
-rm -f ${TOMCAT_HOME}/conf/policy.d//51metacat.policy
+rm -f ${TOMCAT_HOME}/conf/policy.d/51metacat.policy
 
 rm -f ${APACHE_CONF}/jk_mount/knb_jk.*
 
