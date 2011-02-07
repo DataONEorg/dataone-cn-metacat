@@ -10,6 +10,7 @@ JK_CONF=knb_jk.conf
 
 PG=postgresql-8.4
 PG_CONF=/etc/postgresql/8.4/main
+
 PG_USER=postgres
 DB_USER=metacat
 DB_PASS=metacat
@@ -189,7 +190,12 @@ then
   echo "appending 'host metacat metacat 127.0.0.1 255.255.255.255 password' to ${PG_CONF}/pg_hba.conf"
   echo "host metacat metacat 127.0.0.1 255.255.255.255 password" >> ${PG_CONF}/pg_hba.conf
 fi
-
+## postgresql.conf  max_connections = 200
+PG_MAXCON_IS_MODIFIED=`egrep "max_connections *= *200" ${PG_CONF}/postgresql.conf`
+if [ "${PG_MAXCON_IS_MODIFIED}" == "" ]
+then
+	sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 200;' ${PG_CONF}/postgresql.conf
+fi
 ## create metacat schema and user
 echo "Creating metacat database schema"
 su ${PG_USER} -c "createdb metacat"

@@ -28,6 +28,15 @@ then
   chown postgres ${PG_CONF}/pg_hba.conf
   chgrp postgres ${PG_CONF}/pg_hba.conf
 fi
+
+if [ -f ${PG_CONF}/postgresql.conf.bak ]
+then
+  rm -f ${PG_CONF}/postgresql.conf
+  mv ${PG_CONF}/postgresql.conf.bak ${PG_CONF}/postgresql.conf
+  chown postgres ${PG_CONF}/postgresql.conf
+  chgrp postgres ${PG_CONF}/postgresql.conf	
+fi
+
 ## Restart the postgres db
 echo "Restarting postgres database"
 /etc/init.d/${PG} restart
