@@ -194,7 +194,7 @@ fi
 PG_MAXCON_IS_MODIFIED=`egrep "max_connections *= *200" ${PG_CONF}/postgresql.conf`
 if [ "${PG_MAXCON_IS_MODIFIED}" == "" ]
 then
-	sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 200;' ${PG_CONF}/postgresql.conf
+	sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 200/;' ${PG_CONF}/postgresql.conf
 fi
 ## create metacat schema and user
 echo "Creating metacat database schema"
