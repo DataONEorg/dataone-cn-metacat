@@ -61,8 +61,11 @@ mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
 
 ## replace the token HOSTNAME in the properties file to a hostname beginning with cn in the /etc/hosts file
 sleep 5
-SHORTHOSTNAME=$(< /etc/hostname)
-HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;exit;} END{print $hostname}' /etc/hosts`
+#HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;exit;} END{print $hostname}' /etc/hosts`
+
+## replace the token HOSTNAME in the site file to a hostname as found by issuing a hostname -f
+HOSTNAME=`/bin/hostname -f`
+
 if [ "$HOSTNAME" != "" ]
 then
 	sed -i.bak  's/\(server\.name\=\)localhost/\1'${HOSTNAME}'/;
@@ -77,7 +80,8 @@ then
 		s/\(database\.driver\=\)/\1org\.postgresql\.Driver/;
 		s/\(database\.adapter\=\)/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
 		s/\(auth\.administrators\=\)/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
-		s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;' \
+		s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;
+		s/\(#\)\(dataone\.hazelcast\.configFilePath\=\/etc\/dataone\/storage\/hazelcast\.xml\)/\2/;'\
 		${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
 else
 	echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
