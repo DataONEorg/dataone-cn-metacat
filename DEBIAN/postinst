@@ -87,7 +87,7 @@ else
 	echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
 fi
 
-cp ${SOURCE_DIR}/debian/log4j.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
+cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
 echo cd to $CURR_DIR
 cd $CURR_DIR
