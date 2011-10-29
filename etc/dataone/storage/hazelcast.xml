@@ -15,8 +15,8 @@
         <multicast-port>54327</multicast-port>
       </multicast>
       <tcp-ip enabled="true">
-        <hostname>localhost</hostname>
-        <!--  <interface>127.0.0.1</interface>-->
+        <!-- <hostname>localhost</hostname> -->
+        <interface>127.0.0.1</interface>
       </tcp-ip>
     </join>
     <interfaces enabled="false">
