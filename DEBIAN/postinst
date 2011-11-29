@@ -81,6 +81,8 @@ then
 		s/\(database\.adapter\=\)/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
 		s/\(auth\.administrators\=\)/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
 		s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;
+		s/\(D1Client\.CN_URL\=\).+/\1https\:\/\/localhost\/cn/;
+		s/\(dataone\.nodeType\=\)mn/\1cn/;
 		s/\(#\)\(dataone\.hazelcast\.configFilePath\=\/etc\/dataone\/storage\/hazelcast\.xml\)/\2/;'\
 		${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
 else
