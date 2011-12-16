@@ -238,3 +238,5 @@ echo "starting Tomcat server"
 #chmod u+x ${SOURCE_DIR}/delay-tomcat-start
 #${SOURCE_DIR}/delay-tomcat-start &
 
+#open up the correct port for hazelcast
+ufw allow 5701
