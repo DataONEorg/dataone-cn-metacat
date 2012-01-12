@@ -61,7 +61,16 @@
     <keep-alive-seconds>60</keep-alive-seconds>
   </executor-service>
 
-
+  <!-- 
+    The DataONE Storage Cluster distributed structures are define below. Note:
+    The hzIdentifiers set is created programmatically when Matacat's 
+    HazelcastService starts the cluster.  If it were configurable in this XML
+    file, it would look something like the element below.  This is just added
+    for documentation purposes.
+  -->
+  <!--
+  <set name="hzIdentifiers" />
+  -->
   <map name="hzSystemMetadata">
     <!--
       Number of backups. If 1 is set as the backup-count for example,
