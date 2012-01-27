@@ -26,8 +26,6 @@ METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temp
 echo "Stopping Tomcat"
 /etc/init.d/${TOMCAT} stop
 
-
-
 ## backup the old war file
 if [ -e ${TOMCAT_HOME}/webapps/knb.war.current ]
 then
@@ -68,26 +66,29 @@ HOSTNAME=`/bin/hostname -f`
 
 if [ "$HOSTNAME" != "" ]
 then
-	sed -i.bak  's/\(server\.name\=\)localhost/\1'${HOSTNAME}'/;
-		s/\(application\.deployDir\=\)/\1\/var\/lib\/tomcat6\/webapps/;
-		s/\(application\.backupDir\=\)/\1\/var\/metacat\/\.knb/;
-		s/\(application\.context=\)/\1knb/;
-		s/\(application\.debugOutputFile\=\)\/tmp\/metacat\.debug/\1\/var\/metacat\/temporary\/metacat.debug/;
-		s/\(application\.delimiteredOutputFile\=\)\/tmp\/metacat\.debug\.delimitered/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
-		s/\(database\.user\=\)/\1metacat/;
-		s/\(database\.password\=\)/\1metacat/;
-		s/\(database\.type\=\)/\1postgres/;
-		s/\(database\.driver\=\)/\1org\.postgresql\.Driver/;
-		s/\(database\.adapter\=\)/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
-		s/\(auth\.administrators\=\)/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
-		s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;
-		s/\(D1Client\.CN_URL\=\).+/\1https\:\/\/localhost\/cn/;
-		s/\(dataone\.nodeType\=\)mn/\1cn/;
-		s/\(#\)\(dataone\.hazelcast\.configFilePath\=\/etc\/dataone\/storage\/hazelcast\.xml\)/\2/;'\
-		${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+	sed -i.bak  's/\(server\.name\=\)localhost/\1'${HOSTNAME}'/;' ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
 else
 	echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
 fi
+# change a lot of properties for this configuration
+sed -i 's/\(application\.deployDir\=\)/\1\/var\/lib\/tomcat6\/webapps/;
+	s/\(application\.backupDir\=\)/\1\/var\/metacat\/\.knb/;
+	s/\(application\.context=\)/\1knb/;
+	s/\(application\.debugOutputFile\=\)\/tmp\/metacat\.debug/\1\/var\/metacat\/temporary\/metacat.debug/;
+	s/\(application\.delimiteredOutputFile\=\)\/tmp\/metacat\.debug\.delimitered/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
+	s/\(database\.user\=\)/\1metacat/;
+	s/\(database\.password\=\)/\1metacat/;
+	s/\(database\.type\=\)/\1postgres/;
+	s/\(database\.driver\=\)/\1org\.postgresql\.Driver/;
+	s/\(database\.adapter\=\)/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
+	s/\(auth\.administrators\=\)/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
+	s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;
+	s/\(D1Client\.CN_URL\=\).+/\1https\:\/\/localhost\/cn/;
+	s/\(dataone\.nodeType\=\)mn/\1cn/;
+	s/\(#\)\(dataone\.hazelcast\.configFilePath\=\/etc\/dataone\/storage\/hazelcast\.xml\)/\2/;'\
+	${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+
+# the CN has its own log4j configuration
 
 cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
@@ -127,26 +128,6 @@ done
 # Configure Tomcat
 ###############################################################################
 
-## Change ownership of the tomcat directories to be the tomcat user
-#echo "changing ownership of ${TOMCAT_HOME} to ${TOMCAT_USER}"
-#chown -R ${TOMCAT_USER} ${TOMCAT_HOME} 
-#echo "changing ownership of /var/lib/tomcat5.5 to ${TOMCAT_USER}"
-#chown -R ${TOMCAT_USER} /var/lib/tomcat5.5
-#echo "changing ownership of /etc/tomcat5.5 to ${TOMCAT_USER}"
-#chown -R ${TOMCAT_USER} /etc/tomcat5.5
-#
-## If the tomcat5.5 startup script in the package is different than the one
-## in /etc/init.d, then backup the existing one and copy in the package version.
-#TOMCAT_START_SCRIPT_DIFF=`diff ${SOURCE_DIR}/tomcat5.5 /etc/init.d/tomcat5.5`
-#if [ "$TOMCAT_START_SCRIPT_DIFF" != "" ]
-#then
-  #echo "Backing up /etc/init.d/tomcat5.5 to /etc/init.d/tomcat5.5.${LONG_DATE}"
-  #mv /etc/init.d/tomcat5.5 /etc/init.d/tomcat5.5.${LONG_DATE}
-  #echo "Copying new tomcat5.5 script to /etc/init.d/"
-  #cp ${SOURCE_DIR}/tomcat5.5 /etc/init.d/
-  #echo "Making /etc/init.d/tomcat5.5 executable"
-  #chmod +x /etc/init.d/tomcat5.5
-#fi
 
 # Configure the tomcat server
 #cp ${SCRIPT_DIR}/server.xml ${TOMCAT_HOME}/conf/
@@ -220,23 +201,10 @@ echo "Restarting postgres database"
 ## Start Apache
 /etc/init.d/apache2 start
 
-## ugly hack to fix circular dependency bug that will keep tomcat
-## from starting within this script
-#if [ ! -f /etc/java-1.5.0-sun/jvm.cfg ]; then
-#  temp_jvm_cfg=/etc/java-1.5.0-sun/jvm.cfg
-#  mkdir -p /etc/java-1.5.0-sun
-#  printf -- "-server KNOWN\n" > $temp_jvm_cfg
-#fi
-
 ## Start Tomcat
 echo "starting Tomcat server"
 
-#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
-#/usr/share/tomcat5.5/bin/startup.sh
-
 /etc/init.d/${TOMCAT} start
-#chmod u+x ${SOURCE_DIR}/delay-tomcat-start
-#${SOURCE_DIR}/delay-tomcat-start &
 
 #open up the correct port for hazelcast
 ufw allow 5701
