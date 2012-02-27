@@ -18,6 +18,35 @@ SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
 METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temporary"
+
+D1_CONF=/etc/dataone
+NODE_PROPS="$D1_CONF/node.properties"
+###############################################################################
+# Parse node.properties file for various needed parameters to set elsewhere
+###############################################################################
+
+HAZELCAST_INTERFACE=""
+SPACER="        "
+for ip in `egrep 'cn.iplist=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
+do
+    IP_XML_NODE="<interface>${ip}<\/interface>"
+    HAZELCAST_INTERFACE=${HAZELCAST_INTERFACE}${IP_XML_NODE}'\n'${SPACER}
+done
+
+#replace the string <interface>127.0.0.1</interface> with the environment's iplist
+
+sed -i.bak --regexp-extended "s/<interface>127\.0\.0\.1<\/interface>/${HAZELCAST_INTERFACE}/;" ${D1_CONF}/storage/hazelcast.xml
+
+#<interface>127.0.0.1</interface>
+
+NODE_ID=`egrep 'cn.nodeId=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
+D1CLIENT_CERTIFICATE_DIRECTORY=`egrep 'D1Client.certificate.directory=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
+D1CLIENT_CERTIFICATE_FILENAME=`egrep 'D1Client.certificate.filename=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
+D1ClIENT_CERTIFICATE=${D1CLIENT_CERTIFICATE_DIRECTORY}'/'${D1CLIENT_CERTIFICATE_FILENAME}
+
+D1ClIENT_CERTIFICATE=${D1ClIENT_CERTIFICATE//\//\\\/}
+
+
 ###############################################################################
 # Install metacat war file
 ###############################################################################
@@ -66,27 +95,33 @@ HOSTNAME=`/bin/hostname -f`
 
 if [ "$HOSTNAME" != "" ]
 then
-	sed -i.bak  's/\(server\.name\=\)localhost/\1'${HOSTNAME}'/;' ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+        sed -i.bak --regexp-extended  "s/(server\.name=).*/\1${HOSTNAME}/;" /home/rwaltz/metacat.properties
 else
-	echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
+        echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
 fi
 # change a lot of properties for this configuration
-sed -i 's/\(application\.deployDir\=\)/\1\/var\/lib\/tomcat6\/webapps/;
-	s/\(application\.backupDir\=\)/\1\/var\/metacat\/\.knb/;
-	s/\(application\.context=\)/\1knb/;
-	s/\(application\.debugOutputFile\=\)\/tmp\/metacat\.debug/\1\/var\/metacat\/temporary\/metacat.debug/;
-	s/\(application\.delimiteredOutputFile\=\)\/tmp\/metacat\.debug\.delimitered/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
-	s/\(database\.user\=\)/\1metacat/;
-	s/\(database\.password\=\)/\1metacat/;
-	s/\(database\.type\=\)/\1postgres/;
-	s/\(database\.driver\=\)/\1org\.postgresql\.Driver/;
-	s/\(database\.adapter\=\)/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
-	s/\(auth\.administrators\=\)/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
-	s/\(replication\.logdir\=\)/\1\/var\/metacat\/logs/;
-	s/\(D1Client\.CN_URL\=\).+/\1https\:\/\/localhost\/cn/;
-	s/\(dataone\.nodeType\=\)mn/\1cn/;
-	s/\(#\)\(dataone\.hazelcast\.configFilePath\=\/etc\/dataone\/storage\/hazelcast\.xml\)/\2/;'\
-	${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/webapps/;
+        s/(application\.backupDir=).*/\1\/var\/metacat\/\.knb/;
+        s/(application\.context=).*/\1knb/;
+        s/(application\.debugOutputFile=).*/\1\/var\/metacat\/temporary\/metacat.debug/;
+        s/(application\.delimiteredOutputFile=).*/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
+        s/(database\.user=).*/\1metacat/;
+        s/(database\.password=).*/\1metacat/;
+        s/(database\.type=).*/\1postgres/;
+        s/(database\.driver=).*/\1org\.postgresql\.Driver/;
+        s/(database\.adapter=).*/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
+        s/(auth\.administrators=).*/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
+        s/(replication\.logdir=).*/\1\/var\/metacat\/logs/;
+        s/(replication\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
+        s/(replication\.privatekey\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
+        s/(replication\.privatekey\.password=).*/\1/;
+        s/(D1Client\.CN_URL=).*/\1https\:\/\/localhost\/cn/;
+        s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
+        s/(dataone\.nodeType=).*/\1cn/;
+        s/(dataone\.memberNodeId=).*/\1${NODE_ID}/;
+        s/(#)(dataone\.hazelcast\.configFilePath=\/etc\/dataone\/storage\/hazelcast\.xml)/\2/;"\
+        /home/rwaltz/metacat.properties
+
 
 # the CN has its own log4j configuration
 
