@@ -118,10 +118,9 @@ sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/w
         s/(D1Client\.CN_URL=).*/\1https\:\/\/localhost\/cn/;
         s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
         s/(dataone\.nodeType=).*/\1cn/;
-        s/(dataone\.memberNodeId=).*/\1${NODE_ID}/;
+        s/(dataone\.nodeId=).*/\1${NODE_ID}/;
         s/(#)(dataone\.hazelcast\.configFilePath=\/etc\/dataone\/storage\/hazelcast\.xml)/\2/;"\
         ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
-
 
 # the CN has its own log4j configuration
 
