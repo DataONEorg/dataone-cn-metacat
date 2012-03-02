@@ -15,10 +15,10 @@ PG=postgresql-8.4
 PG_CONF=/etc/postgresql/8.4/main
 
 ## drop metacat schema and user
-echo "Droping metacat database"
-su postgres -c "dropdb metacat"
-echo "Droping metacat database use metacat"
-su postgres -c "psql --command \"DROP USER metacat\""
+#echo "Dropping metacat database"
+#su postgres -c "dropdb metacat"
+#echo "Dropping metacat database use metacat"
+#su postgres -c "psql --command \"DROP USER metacat\""
 ##pg_hba.conf was modified, we should probably return it to original
 
 if [ -f ${PG_CONF}/pg_hba.conf.bak ]
