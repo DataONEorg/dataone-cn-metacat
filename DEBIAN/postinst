@@ -240,5 +240,16 @@ echo "starting Tomcat server"
 
 /etc/init.d/${TOMCAT} start
 
-#open up the correct port for hazelcast
-ufw allow 5701
+# look up the CN iplist from debconf
+. /usr/share/debconf/confmodule
+
+db_get dataone-cn-os-core/cn.iplist
+IPLIST=${RET}
+if [[ "${IP_LIST}" == [1-9]* ]]; then
+    for IP in ${IP_LIST}
+        do
+            #open up the correct port for hazelcast
+            ufw allow to any port 5701 from ${IP}
+            ufw allow to any port 5702 from ${IP}
+        done
+fi
