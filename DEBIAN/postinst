@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# source the debconf library
+if [ -e "/usr/share/debconf/confmodule" ]; then
+    . /usr/share/debconf/confmodule
+else
+    echo "debconf must be installed. Exiting."
+    exit 1
+fi
+
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
 TOMCAT=tomcat6
@@ -21,6 +29,20 @@ METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temp
 
 D1_CONF=/etc/dataone
 NODE_PROPS="$D1_CONF/node.properties"
+D1_LOG_DIR=/var/log/dataone
+if [ ! -e ${D1_LOG_DIR} ]; then
+    mkdir -p ${D1_LOG_DIR}
+fi
+
+# functions to echo to STDERR or the install log instead of STDOUT
+logError () {
+    echo -e "$@" 1>&2
+}
+
+log () {
+    echo -e "$@" >> ${D1_LOG_DIR}/dataone-cn-metacat.install.log
+}
+
 ###############################################################################
 # Parse node.properties file for various needed parameters to set elsewhere
 ###############################################################################
@@ -52,36 +74,36 @@ D1ClIENT_CERTIFICATE=${D1ClIENT_CERTIFICATE//\//\\\/}
 ###############################################################################
 
 ## Stop tomcat
-echo "Stopping Tomcat"
+log "Stopping Tomcat"
 /etc/init.d/${TOMCAT} stop
 
 ## backup the old war file
 if [ -e ${TOMCAT_HOME}/webapps/knb.war.current ]
 then
-  echo "Backing up ${TOMCAT_HOME}/webapps/knb.war to ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}"
+  log "Backing up ${TOMCAT_HOME}/webapps/knb.war to ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}"
   mv ${TOMCAT_HOME}/webapps/knb.war.current ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}
 fi  
 
 ## remove the knb application directory
 if [ -d ${TOMCAT_HOME}/webapps/knb ]
 then
-  echo "Removing the old metacat application directories"
+  log "Removing the old metacat application directories"
   rm -rf ${TOMCAT_HOME}/webapps/knb
 fi 
 
 ## copy the new war file into the webapps directory
-echo copying new knb.war file to ${TOMCAT_HOME}/webapps/knb.war
+log "copying new knb.war file to ${TOMCAT_HOME}/webapps/knb.war"
 cp ${SOURCE_DIR}/knb.war ${TOMCAT_HOME}/webapps/knb.war
 
 ## expand the war file
 CURR_DIR=`pwd`
 
 ## make knb directory and extract knb.war into it.
-echo "Making knb application directory: ${TOMCAT_HOME}/webapps/knb"
+log "Making knb application directory: ${TOMCAT_HOME}/webapps/knb"
 mkdir ${TOMCAT_HOME}/webapps/knb
 cd ${TOMCAT_HOME}/webapps/knb
 
-echo "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
+log "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
 jar -xvf ${TOMCAT_HOME}/webapps/knb.war > /dev/null
 
 mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
@@ -97,7 +119,7 @@ if [ "$HOSTNAME" != "" ]
 then
         sed -i.bak --regexp-extended  "s/(server\.name=).*/\1${HOSTNAME}/;" ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
 else
-        echo "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
+        log "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
 fi
 # change a lot of properties for this configuration
 sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/webapps/;
@@ -126,7 +148,7 @@ sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/w
 
 cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
 chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
-echo cd to $CURR_DIR
+log "cd to $CURR_DIR"
 cd $CURR_DIR
 
 chmod -R  +x ${TOMCAT_HOME}/webapps/knb/cgi-bin
@@ -138,12 +160,12 @@ chmod -R  +x ${TOMCAT_HOME}/webapps/knb/cgi-bin
 ## Create the /var/metacat directory
 if [ ! -d ${METACAT_VAR} ]
 then
-  echo "Making Metacat utility directory: /var/metacat"
+  log "Making Metacat utility directory: /var/metacat"
   mkdir ${METACAT_VAR}
 fi
 
 ## Change the ownership of the /var/metacat directory to be the tomcat user.
-echo "changing ownership of /var/metacat to ${TOMCAT_USER}"
+log "changing ownership of /var/metacat to ${TOMCAT_USER}"
 chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
 
 ## Create the dataone logging directory
@@ -152,9 +174,9 @@ do
 	FULL_VAR_SUBDIR=${METACAT_VAR}/${SUBDIR}
 	if [ ! -d ${FULL_VAR_SUBDIR} ]
 	then
-	  echo "Making Metacat application directory: ${FULL_VAR_SUBDIR}"
+	  log "Making Metacat application directory: ${FULL_VAR_SUBDIR}"
 	  mkdir ${FULL_VAR_SUBDIR}
-	  echo "changing ownership of ${FULL_VAR_SUBDIR}  to ${TOMCAT_USER}"
+	  log "changing ownership of ${FULL_VAR_SUBDIR}  to ${TOMCAT_USER}"
 	  chown ${TOMCAT_USER}.${TOMCAT_USER} ${FULL_VAR_SUBDIR}
 	fi
 done
@@ -177,7 +199,7 @@ cp ${SCRIPT_DIR}/51metacat.policy ${TOMCAT_HOME}/conf/policy.d/
 ###############################################################################
 
 ## Stop apache
-echo "Stopping Apache"
+log "Stopping Apache"
 /etc/init.d/apache2 stop
 
 ## copy in jk mount configuration file
@@ -187,11 +209,11 @@ then
   JK_DIFF=`diff ${SCRIPT_DIR}/${JK_CONF} ${APACHE_CONF}/jk_mount/${JK_CONF}`
   if [ "${JK_DIFF}" != "" ]
   then
-    echo "Backing up ${APACHE_CONF}/jk_mount/${JK_CONF} to ${APACHE_CONF}/jk_mount/${JK_CONF}.${LONG_DATE}"
+    log "Backing up ${APACHE_CONF}/jk_mount/${JK_CONF} to ${APACHE_CONF}/jk_mount/${JK_CONF}.${LONG_DATE}"
     mv ${APACHE_CONF}/jk_mount/${JK_CONF} ${APACHE_CONF}/jk_mount/${JK_CONF}.${LONG_DATE}
   fi
 fi
-echo "Copying ${JK_CONF} site file to ${APACHE_CONF}/jk_mount/"
+log "Copying ${JK_CONF} site file to ${APACHE_CONF}/jk_mount/"
 cp ${SCRIPT_DIR}/${JK_CONF} ${APACHE_CONF}/jk_mount/
 
 
@@ -203,12 +225,12 @@ cp ${SCRIPT_DIR}/${JK_CONF} ${APACHE_CONF}/jk_mount/
 PG_HBA_IS_MODIFIED=`grep "metacat metacat" ${PG_CONF}/pg_hba.conf`
 if [ "${PG_HBA_IS_MODIFIED}" == "" ]
 then
-  echo "backing up ${PG_CONF}/pg_hba.conf to ${PG_CONF}/pg_hba.conf.bak"
+  log "backing up ${PG_CONF}/pg_hba.conf to ${PG_CONF}/pg_hba.conf.bak"
   cp ${PG_CONF}/pg_hba.conf ${PG_CONF}/pg_hba.conf.bak
   chown postgres ${PG_CONF}/pg_hba.conf
   chgrp postgres ${PG_CONF}/pg_hba.conf
 
-  echo "appending 'host metacat metacat 127.0.0.1 255.255.255.255 password' to ${PG_CONF}/pg_hba.conf"
+  log "appending 'host metacat metacat 127.0.0.1 255.255.255.255 password' to ${PG_CONF}/pg_hba.conf"
   echo "host metacat metacat 127.0.0.1 255.255.255.255 password" >> ${PG_CONF}/pg_hba.conf
 fi
 ## postgresql.conf  max_connections = 200
@@ -218,14 +240,14 @@ then
 	sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 200/;' ${PG_CONF}/postgresql.conf
 fi
 ## create metacat schema and user
-echo "Creating metacat database schema"
+log "Creating metacat database schema"
 su ${PG_USER} -c "createdb metacat"
 
-echo "Creating metacat user" 
+log "Creating metacat user" 
 su ${PG_USER} -c "psql -c \"CREATE USER ${DB_USER} WITH UNENCRYPTED PASSWORD '${DB_PASS}'\""
 
 ## Restart the postgres db
-echo "Restarting postgres database"
+log "Restarting postgres database"
 /etc/init.d/${PG} restart
 
 ###############################################################################
@@ -236,15 +258,13 @@ echo "Restarting postgres database"
 /etc/init.d/apache2 start
 
 ## Start Tomcat
-echo "starting Tomcat server"
+log "starting Tomcat server"
 
 /etc/init.d/${TOMCAT} start
 
-# look up the CN iplist from debconf
-. /usr/share/debconf/confmodule
-
 db_get dataone-cn-os-core/cn.iplist
-IPLIST=${RET}
+IP_LIST=${RET}
+
 if [[ "${IP_LIST}" == [1-9]* ]]; then
     for IP in ${IP_LIST}
         do
@@ -253,3 +273,5 @@ if [[ "${IP_LIST}" == [1-9]* ]]; then
             ufw allow to any port 5702 from ${IP}
         done
 fi
+db_stop
+exit 0;
