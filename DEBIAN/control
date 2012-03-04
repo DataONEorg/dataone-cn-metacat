@@ -1,5 +1,5 @@
 Package: dataone-cn-metacat
-Version: 2.0.0-RC2~unstable
+Version: 2.0.0-RC2
 Section: utils
 Priority: optional
 Architecture: all
