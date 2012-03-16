@@ -250,6 +250,12 @@ su ${PG_USER} -c "psql -c \"CREATE USER ${DB_USER} WITH UNENCRYPTED PASSWORD '${
 log "Restarting postgres database"
 /etc/init.d/${PG} restart
 
+
+
+######### Update DateONE Version Info Doc  #############
+java -jar /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar -F/usr/share/dataone-cn-version-tool/version-tool.properties -html > /var/www/cn-version.html
+
+
 ###############################################################################
 # Start Apache and Tomcat
 ###############################################################################
