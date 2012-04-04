@@ -127,6 +127,10 @@
       <class-name>edu.ucsb.nceas.metacat.dataone.hazelcast.SystemMetadataMap</class-name>
       <write-delay-seconds>0</write-delay-seconds>
     </map-store>
+    
+    <!-- Allow reads from backup entry copies if the owner member can't -->
+    <read-backup-data>false</read-backup-data>
+    
   </map>
 
   <map name="hzObjectPath">
