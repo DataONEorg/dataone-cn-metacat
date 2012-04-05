@@ -53,6 +53,8 @@ rm -f ${TOMCAT_HOME}/conf/policy.d/51metacat.policy
 
 rm -f ${APACHE_CONF}/jk_mount/knb_jk.*
 
+rm -rf /etc/dataone/storage
+
 /etc/init.d/tomcat6 start
 /etc/init.d/apache2 start
 
