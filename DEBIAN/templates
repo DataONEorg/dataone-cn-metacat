@@ -1,4 +1,4 @@
-Template: dataone-cn-metacat/cn.metacat.certificate.filepath
+Template: dataone-cn-metacat/cn.metacat.replication.certificate.filepath
 Description: What is the path to the Metacat replication certificate file?
  Metacat replication between CNs use this certificate. 
  Provide the path to the SSL certificate generated for this CN for Metacat replication.
