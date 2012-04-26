@@ -23,7 +23,9 @@ log () {
 log "dataone-cn-metacat/config called."
 
 # Upgrade or install: check for previous values
+# TODO: make a setting for this switch
 db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
+RET=""
 if [[ "${RET}" == "" ]]; then
 	
    # certificate location
