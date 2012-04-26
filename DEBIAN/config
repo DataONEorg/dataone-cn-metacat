@@ -24,9 +24,8 @@ log "dataone-cn-metacat/config called."
 
 # Upgrade or install: check for previous values
 # TODO: make a setting for this switch
-db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
-RET=""
-if [[ "${RET}" == "" ]]; then
+#db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
+#if [[ "${RET}" == "" ]]; then
 	
    # certificate location
    db_input high dataone-cn-metacat/cn.metacat.replication.certificate.filepath
@@ -35,8 +34,8 @@ if [[ "${RET}" == "" ]]; then
    # private key password 
    db_input high dataone-cn-metacat/cn.metacat.replication.privatekey.password
    
-else
-    log "Upgrading the package. No configuration questions asked."
-fi
+#else
+#    log "Upgrading the package. No configuration questions asked."
+#fi
 
 exit 0
