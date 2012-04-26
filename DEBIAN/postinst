@@ -27,6 +27,10 @@ SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
 METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temporary"
 
+METACAT_REPLICATION_CERTIFICATE=
+METACAT_REPLICATION_KEY=
+METACAT_REPLICATION_KEY_PASSWORD=
+
 D1_CONF=/etc/dataone
 NODE_PROPS="$D1_CONF/node.properties"
 D1_LOG_DIR=/var/log/dataone
@@ -68,6 +72,17 @@ D1ClIENT_CERTIFICATE=${D1CLIENT_CERTIFICATE_DIRECTORY}'/'${D1CLIENT_CERTIFICATE_
 
 D1ClIENT_CERTIFICATE=${D1ClIENT_CERTIFICATE//\//\\\/}
 
+###############################################################################
+# Prompt for Metacat replication properties
+###############################################################################
+db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
+METACAT_REPLICATION_CERTIFICATE=${RET}
+
+db_get dataone-cn-metacat/cn.metacat.replication.privatekey.filepath
+METACAT_REPLICATION_KEY=${RET}
+
+db_get dataone-cn-metacat/cn.metacat.replication.privatekey.password
+METACAT_REPLICATION_KEY_PASSWORD=${RET}
 
 ###############################################################################
 # Install metacat war file
@@ -134,9 +149,9 @@ sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/w
         s/(database\.adapter=).*/\1edu\.ucsb\.nceas\.dbadapter\.PostgresqlAdapter/;
         s/(auth\.administrators=).*/\1uid\=dataone\_cn\_metacat\,o\=DATAONE\,dc\=ecoinformatics\,dc\=org/;
         s/(replication\.logdir=).*/\1\/var\/metacat\/logs/;
-        s/(replication\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
-        s/(replication\.privatekey\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
-        s/(replication\.privatekey\.password=).*/\1/;
+        s/(replication\.certificate\.file=).*/\1${METACAT_REPLICATION_CERTIFICATE}/;
+        s/(replication\.privatekey\.file=).*/\1${METACAT_REPLICATION_KEY}/;
+        s/(replication\.privatekey\.password=).*/\1${METACAT_REPLICATION_KEY_PASSWORD}/;
         s/(D1Client\.CN_URL=).*/\1https\:\/\/localhost\/cn/;
         s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
         s/(dataone\.nodeType=).*/\1cn/;

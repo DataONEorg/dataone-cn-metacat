@@ -1,0 +1,40 @@
+#!/bin/bash -x
+
+# Source the debconf library
+. /usr/share/debconf/confmodule
+
+#Reminder: Don't echo to STDOUT. it messes up debconf
+
+# functions to echo to STDERR or the install log instead of STDOUT
+D1_LOG_DIR=/var/log/dataone
+
+if [ ! -e $D1_LOG_DIR ]; then
+    mkdir -p $D1_LOG_DIR
+fi
+
+logError () {
+    echo "$@" 1>&2;
+}
+
+log () {
+    echo "$@" >> ${D1_LOG_DIR}/dataone-cn-os-core.install.log;
+}
+
+log "dataone-cn-metacat/config called."
+
+# Upgrade or install: check for previous values
+db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
+if [[ "${RET}" == "" ]]; then
+	
+   # certificate location
+   db_input high dataone-cn-metacat/cn.metacat.replication.certificate.filepath
+   # private key location
+   db_input high dataone-cn-metacat/cn.metacat.replication.privatekey.filepath
+   # private key password 
+   db_input high dataone-cn-metacat/cn.metacat.replication.privatekey.password
+   
+else
+    log "Upgrading the package. No configuration questions asked."
+fi
+
+exit 0

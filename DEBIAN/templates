@@ -1,0 +1,18 @@
+Template: dataone-cn-metacat/cn.metacat.certificate.filepath
+Description: What is the path to the Metacat replication certificate file?
+ Metacat replication between CNs use this certificate. 
+ Provide the path to the SSL certificate generated for this CN for Metacat replication.
+Default: /etc/dataone/client/certs/metacat.crt
+Type: string
+
+Template: dataone-cn-metacat/cn.metacat.replication.privatekey.filepath
+Description: What is the path to the Metacat replication private SSL key file?
+ Metacat replication between CNs uses this key. Provide the path 
+ to the SSL private key created for this CN for Mtacat replication.
+Default: /etc/ssl/private/metacat.key
+Type: string
+
+Template: dataone-cn-metacat/cn.metacat.replication.privatekey.password
+Description: What is the password for the private key (if there is one)?
+  Provide the key password for the Metacat private key (blank if there is none).
+Type: password
