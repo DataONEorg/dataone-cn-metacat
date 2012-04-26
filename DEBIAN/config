@@ -34,6 +34,7 @@ log "dataone-cn-metacat/config called."
    # private key password 
    db_input high dataone-cn-metacat/cn.metacat.replication.privatekey.password
    
+   db_go
 #else
 #    log "Upgrading the package. No configuration questions asked."
 #fi
