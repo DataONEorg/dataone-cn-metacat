@@ -60,10 +60,10 @@ rm -rf /etc/dataone/storage
 
 
 ## Update DateONE Version Info Doc
-#if [ -e /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar ] ;
-#then
-#   java -jar /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar -F/usr/share/dataone-cn-version-tool/version-tool.properties -html > /var/www/cn-version.html
-#fi
+if [ -e /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar ] ;
+then
+   java -jar /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar -F/usr/share/dataone-cn-version-tool/version-tool.properties -html > /var/www/cn-version.html
+fi
 
 # source the debconf library
 #if [ -e "/usr/share/debconf/confmodule" ]; then
