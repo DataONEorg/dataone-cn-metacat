@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "dataone-cn-metacat.prerm called with action: $1, version: $2"
 
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
@@ -21,16 +22,14 @@ PG_CONF=/etc/postgresql/8.4/main
 #su postgres -c "psql --command \"DROP USER metacat\""
 ##pg_hba.conf was modified, we should probably return it to original
 
-if [ -f ${PG_CONF}/pg_hba.conf.bak ]
-then
+if [ -f ${PG_CONF}/pg_hba.conf.bak ]; then
   rm -f ${PG_CONF}/pg_hba.conf
   mv ${PG_CONF}/pg_hba.conf.bak ${PG_CONF}/pg_hba.conf
   chown postgres ${PG_CONF}/pg_hba.conf
   chgrp postgres ${PG_CONF}/pg_hba.conf
 fi
 
-if [ -f ${PG_CONF}/postgresql.conf.bak ]
-then
+if [ -f ${PG_CONF}/postgresql.conf.bak ]; then
   rm -f ${PG_CONF}/postgresql.conf
   mv ${PG_CONF}/postgresql.conf.bak ${PG_CONF}/postgresql.conf
   chown postgres ${PG_CONF}/postgresql.conf
@@ -60,8 +59,7 @@ rm -rf /etc/dataone/storage
 
 
 ## Update DateONE Version Info Doc
-if [ -e /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar ] ;
-then
+if [ -e /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar ] ; then
    java -jar /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar -F/usr/share/dataone-cn-version-tool/version-tool.properties -html > /var/www/cn-version.html
 fi
 
