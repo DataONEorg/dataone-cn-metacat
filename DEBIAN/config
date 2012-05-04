@@ -19,7 +19,8 @@ logError () {
 }
 
 log () {
-    echo "$@" >> ${D1_LOG_DIR}/dataone-cn-metacat.install.log;
+    now=$(date "+%Y-%m-%d %H:%M:%S %Z: ")
+    echo "${now}$@" >> ${D1_LOG_DIR}/dataone-cn-metacat.install.log;
 }
 
 ACTION=${1} # how the script was called

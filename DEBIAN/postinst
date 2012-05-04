@@ -20,7 +20,8 @@ logError () {
 }
 
 log () {
-    echo -e "$@" >> ${D1_LOG_DIR}/dataone-cn-metacat.install.log
+    now=$(date "+%Y-%m-%d %H:%M:%S %Z: ")
+    echo -e "${now}$@" >> ${D1_LOG_DIR}/dataone-cn-metacat.install.log
 }
 
 log "dataone-cn-metacat.postinst called"
