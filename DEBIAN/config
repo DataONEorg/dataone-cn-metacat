@@ -28,7 +28,7 @@ NEW_VERSION=${2} # the version being installed/upgraded
 log "dataone-cn-metacat.config script called with action: ${ACTION}"
 
 db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
-if [[ ${RET} == "" ]]; then
+if [[ "${RET}" != /etc/dataone/client/certs/* ]]; then
     METACAT_PROPS="${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
     CERTFILE="/etc/dataone/client/certs/metacat.crt"
     KEYFILE="/etc/dataone/private/metacat.key"
@@ -54,7 +54,6 @@ if [[ ${RET} == "" ]]; then
     # Upgrade or install: check for previous values
     # TODO: make a setting for this switch
     if [[ "${ACTION}" == "configure" ]]; then
-    
        # certificate location
        db_input high dataone-cn-metacat/cn.metacat.replication.certificate.filepath
        # private key location
