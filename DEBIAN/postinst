@@ -64,8 +64,7 @@ case "${ACTION}" in
     configure)
     log "Configure called."
     
-    db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
-    if [[ "${RET}" != /etc/dataone/client/certs/* ]]; then
+    if [[ $(dpkg -s dataone-cn-metacat | grep Status | cut -d" " -f4) != "installed" ]]; then
     
         ###############################################################################
         # Parse node.properties file for various needed parameters to set elsewhere
