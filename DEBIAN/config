@@ -51,8 +51,6 @@ if [[ "${RET}" != /etc/dataone/client/certs/* ]]; then
     #db_set dataone-cn-metacat/cn.metacat.replication.privatekey.filepath ${KEYFILE}
     #db_set dataone-cn-metacat/cn.metacat.replication.privatekey.password ${KEYPASS}
     
-    log "dataone-cn-metacat/config called."
-    
     # Upgrade or install: check for previous values
     # TODO: make a setting for this switch
     if [[ "${ACTION}" == "configure" ]]; then
