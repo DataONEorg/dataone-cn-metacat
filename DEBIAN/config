@@ -36,19 +36,19 @@ if [[ "${RET}" != /etc/dataone/client/certs/* ]]; then
     KEYPASS="your-key-passphrase-if-any"
     
     # pull values from an existing values metacat.properties file
-    if [ -e ${METACAT_PROPS} ];then
-        CERTFILE=$(grep "metacat.replication.certificate.file" ${METACAT_PROPS})
-        KEYFILE=$(grep "metacat.replication.privatekey.file" ${METACAT_PROPS})
-        KEYPASS=$(grep "metacat.replication.certificate.file" ${METACAT_PROPS})
-        log "Cert file is: ${CERTFILE}"
-        log "Key file is: ${KEYFILE}"
-        log "Key pass is: ${KEYPASS}"
-    fi
+    #if [ -e ${METACAT_PROPS} ];then
+    #    CERTFILE=$(grep "metacat.replication.certificate.file" ${METACAT_PROPS})
+    #    KEYFILE=$(grep "metacat.replication.privatekey.file" ${METACAT_PROPS})
+    #    KEYPASS=$(grep "metacat.replication.certificate.file" ${METACAT_PROPS})
+    #    log "Cert file is: ${CERTFILE}"
+    #    log "Key file is: ${KEYFILE}"
+    #    log "Key pass is: ${KEYPASS}"
+    #fi
     
     # set default debconf selections from previous values
-    db_set dataone-cn-metacat/cn.metacat.replication.certificate.filepath ${CERTFILE}
-    db_set dataone-cn-metacat/cn.metacat.replication.privatekey.filepath ${KEYFILE}
-    db_set dataone-cn-metacat/cn.metacat.replication.privatekey.password ${KEYPASS}
+    #db_set dataone-cn-metacat/cn.metacat.replication.certificate.filepath ${CERTFILE}
+    #db_set dataone-cn-metacat/cn.metacat.replication.privatekey.filepath ${KEYFILE}
+    #db_set dataone-cn-metacat/cn.metacat.replication.privatekey.password ${KEYPASS}
     
     log "dataone-cn-metacat/config called."
     
