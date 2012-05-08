@@ -94,16 +94,13 @@ case "${ACTION}" in
         ###############################################################################
         # Prompt for Metacat replication properties
         ###############################################################################
-        db_get dataone-cn-metacat/cn.metacat.replication.certificate.filepath
+        db_get dataone-cn-os-core/cn.replication.certificate.filename
         METACAT_REPLICATION_CERTIFICATE=${RET}
         METACAT_REPLICATION_CERTIFICATE=${METACAT_REPLICATION_CERTIFICATE//\//\\\/}
         
-        db_get dataone-cn-metacat/cn.metacat.replication.privatekey.filepath
+        db_get dataone-cn-os-core/cn.replication.privatekey.filename
         METACAT_REPLICATION_KEY=${RET}
         METACAT_REPLICATION_KEY=${METACAT_REPLICATION_KEY//\//\\\/}
-        
-        db_get dataone-cn-metacat/cn.metacat.replication.privatekey.password
-        METACAT_REPLICATION_KEY_PASSWORD=${RET}
         
         ###############################################################################
         # Install metacat war file
