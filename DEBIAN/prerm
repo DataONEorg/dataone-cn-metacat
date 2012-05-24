@@ -40,7 +40,7 @@ fi
 echo "Restarting postgres database"
 /etc/init.d/${PG} restart
 
-rm -rf ${METACAT_VAR}
+#rm -rf ${METACAT_VAR}
 rm -rf ${SOURCE_DIR}
 
 rm -rf ${TOMCAT_HOME}/webapps/knb
