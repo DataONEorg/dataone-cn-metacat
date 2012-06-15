@@ -310,7 +310,6 @@ case "${ACTION}" in
                 do
                     #open up the correct port for hazelcast
                     ufw allow to any port 5701 from ${IP}
-                    ufw allow to any port 5702 from ${IP}
                 done
         fi
         db_stop
