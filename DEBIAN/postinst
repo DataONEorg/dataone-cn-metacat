@@ -309,6 +309,7 @@ case "${ACTION}" in
             for IP in ${IP_LIST}
                 do
                     #open up the correct port for hazelcast
+                    log "Added 'ufw allow to any port 5701 from ${IP}' rule"
                     ufw allow to any port 5701 from ${IP}
                 done
         fi
