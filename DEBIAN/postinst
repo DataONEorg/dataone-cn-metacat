@@ -154,6 +154,11 @@ case "${ACTION}" in
         else
                 log "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
         fi
+        
+        # get the CN RR entry
+        db_get dataone-cn-os-core/cn.router.hostname
+        CN_ROUTER_HOSTNAME=${RET}
+        
         # change a lot of properties for this configuration
         sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/webapps/;
                 s/(application\.backupDir=).*/\1\/var\/metacat\/\.knb/;
@@ -170,7 +175,7 @@ case "${ACTION}" in
                 s/(replication\.certificate\.file=).*/\1${METACAT_REPLICATION_CERTIFICATE}/;
                 s/(replication\.privatekey\.file=).*/\1${METACAT_REPLICATION_KEY}/;
                 s/(replication\.privatekey\.password=).*/\1${METACAT_REPLICATION_KEY_PASSWORD}/;
-                s/(D1Client\.CN_URL=).*/\1https\:\/\/${HOSTNAME}\/cn/;
+                s/(D1Client\.CN_URL=).*/\1https\:\/\/${CN_ROUTER_HOSTNAME}\/cn/;
                 s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
                 s/(dataone\.nodeType=).*/\1cn/;
                 s/(dataone\.nodeId=).*/\1${NODE_ID}/;
