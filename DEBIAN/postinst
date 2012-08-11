@@ -175,6 +175,7 @@ case "${ACTION}" in
                 s/(replication\.certificate\.file=).*/\1${METACAT_REPLICATION_CERTIFICATE}/;
                 s/(replication\.privatekey\.file=).*/\1${METACAT_REPLICATION_KEY}/;
                 s/(replication\.privatekey\.password=).*/\1${METACAT_REPLICATION_KEY_PASSWORD}/;
+                s/(spatial\.regenerateCacheOnRestart=).*/\1false/;
                 s/(D1Client\.CN_URL=).*/\1https\:\/\/${CN_ROUTER_HOSTNAME}\/cn/;
                 s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
                 s/(dataone\.nodeType=).*/\1cn/;
