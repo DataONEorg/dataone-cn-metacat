@@ -47,6 +47,7 @@ SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
 METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temporary"
+METACAT_CLIENT_TIMEOUT=300000
 
 D1_CONF=/etc/dataone
 NODE_PROPS="$D1_CONF/node.properties"
@@ -175,6 +176,7 @@ case "${ACTION}" in
                 s/(replication\.certificate\.file=).*/\1${METACAT_REPLICATION_CERTIFICATE}/;
                 s/(replication\.privatekey\.file=).*/\1${METACAT_REPLICATION_KEY}/;
                 s/(replication\.privatekey\.password=).*/\1${METACAT_REPLICATION_KEY_PASSWORD}/;
+                s/(replication\.client\.timeout=).*/\1${METACAT_CLIENT_TIMEOUT}/;
                 s/(spatial\.regenerateCacheOnRestart=).*/\1false/;
                 s/(D1Client\.CN_URL=).*/\1https\:\/\/${CN_ROUTER_HOSTNAME}\/cn/;
                 s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
