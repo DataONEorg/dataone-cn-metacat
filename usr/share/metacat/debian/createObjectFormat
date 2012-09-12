@@ -269,7 +269,7 @@ my $dn = 'uid=dataone_cn_metacat,o=DATAONE,dc=ecoinformatics,dc=org';
 my $password = "";
 print "Please enter dataone_cn_metacat's password: ";
 chomp($password = <>);
-my $docid = 'OBJECT_FORMAT_LIST.1.1';
+my $docid = 'OBJECT_FORMAT_LIST.1.2';
 my $principal = 'public';
 my $permission = 'read';
 my $permType = 'allow';
