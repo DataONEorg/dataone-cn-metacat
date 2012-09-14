@@ -20,21 +20,8 @@ PG_CONF=/etc/postgresql/8.4/main
 #su postgres -c "dropdb metacat"
 #echo "Dropping metacat database use metacat"
 #su postgres -c "psql --command \"DROP USER metacat\""
-##pg_hba.conf was modified, we should probably return it to original
 
-if [ -f ${PG_CONF}/pg_hba.conf.bak ]; then
-  rm -f ${PG_CONF}/pg_hba.conf
-  mv ${PG_CONF}/pg_hba.conf.bak ${PG_CONF}/pg_hba.conf
-  chown postgres ${PG_CONF}/pg_hba.conf
-  chgrp postgres ${PG_CONF}/pg_hba.conf
-fi
-
-if [ -f ${PG_CONF}/postgresql.conf.bak ]; then
-  rm -f ${PG_CONF}/postgresql.conf
-  mv ${PG_CONF}/postgresql.conf.bak ${PG_CONF}/postgresql.conf
-  chown postgres ${PG_CONF}/postgresql.conf
-  chgrp postgres ${PG_CONF}/postgresql.conf	
-fi
+## Do NOT revert postgres configuration since other modules may still have customizations
 
 ## Restart the postgres db
 echo "Restarting postgres database"
