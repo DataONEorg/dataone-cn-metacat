@@ -37,9 +37,9 @@ TOMCAT_HOME=/var/lib/tomcat6
 APACHE_CONF=/etc/apache2
 JK_CONF=knb_jk.conf
 
+SYSCTL_CONF=/etc/sysctl.conf
 PG=postgresql-8.4
 PG_CONF=/etc/postgresql/8.4/main
-
 PG_USER=postgres
 DB_USER=metacat
 DB_PASS=metacat
@@ -275,11 +275,26 @@ case "${ACTION}" in
           log "appending 'host metacat metacat 127.0.0.1 255.255.255.255 password' to ${PG_CONF}/pg_hba.conf"
           echo "host metacat metacat 127.0.0.1 255.255.255.255 password" >> ${PG_CONF}/pg_hba.conf
         fi
-        ## postgresql.conf  max_connections = 200
-        PG_MAXCON_IS_MODIFIED=`egrep "max_connections *= *200" ${PG_CONF}/postgresql.conf`
-        if [ "${PG_MAXCON_IS_MODIFIED}" == "" ]; then
-            sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 200/;' ${PG_CONF}/postgresql.conf
+        
+        ## postgresql.conf  max_connections = 400
+        let MAX_CONNECTIONS=$(egrep "max_connections *=" ${PG_CONF}/postgresql.conf | cut -d# -f1 | cut -d= -f2 | tr -d " ")
+        if [ ${MAX_CONNECTIONS} -ne 400 ]; then
+            sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 400/;' ${PG_CONF}/postgresql.conf
         fi
+        
+        ## postgresql.conf shared_buffers = 2GB
+        SHARED_BUFFERS=$(egrep "shared_buffers *=" ${PG_CONF}/postgresql.conf | cut -d= -f2 | cut -d# -f1 | tr -d " ")
+        if [[ "" != "2048MB" ]]; then
+            sed -i.bak  's/\(shared_buffers\s*\=\s*\)[\d]+MB/\1 2048MB/;' ${PG_CONF}/postgresql.conf
+        fi
+        
+        ## with higher memory requirements for postgresql, increase kernel.shmmax to 3GB          
+        SHMMAX=$(egrep "kernel\.shmmax=" ${SYSCTL_CONF}  | cut -d= -f2 | cut -d# -f1 | tr -d " ")
+        if [[ "${SHMMAX}" != "3221225472" ]]; then
+            sed -i.bak  's/.*\(kernel\.shmmax\)\=.*/\1=3221225472/;' ${SYSCTL_CONF}
+            sysctl -w kernel.shmmax=3221225472
+        fi
+        
         ## create metacat schema and user
         log "Creating metacat database schema"
         su ${PG_USER} -c "createdb metacat"
