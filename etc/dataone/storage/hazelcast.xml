@@ -6,7 +6,11 @@
     <name>DataONE</name>
     <password>password</password>
   </group>
-
+  <properties>
+<!--    <property name="hazelcast.max.no.heartbeat.seconds">60</property> -->
+<!--    <property name="hazelcast.map.partition.count">2710</property> -->
+    <property name="hazelcast.logging.type">log4j</property>
+  </properties>
   <network>
     <port auto-increment="false">5701</port>
     <join>
