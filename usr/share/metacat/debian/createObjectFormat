@@ -319,7 +319,7 @@ print ($metacat->getMessage());
 __DATA__
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="93" start="0" total="93" 
+<d1:objectFormatList count="95" start="0" total="95" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -344,23 +344,29 @@ __DATA__
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
+    <!-- http://downloads.esri.com/support/whitepapers/ao_/GeospatialMetadataProfile_J8709_3-03.pdf -->
+    <formatId>http://www.esri.com/metadata/esriprof80.dtd</formatId>
+    <formatName>ESRI Profile of the Content Standard for Digital Geospatial Metadata, March 2003</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
     <formatId>FGDC-STD-001.1-1999</formatId>
-    <formatName> Content Standard for Digital Geospatial Metadata, Biological Data Profile, version 001.1-1999 </formatName>
+    <formatName>Content Standard for Digital Geospatial Metadata, Biological Data Profile, version 001.1-1999</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>FGDC-STD-001.2-1999</formatId>
-    <formatName> Content Standard for Digital Geospatial Metadata, Metadata Profile for Shoreline Data, version 001.2-1999 </formatName>
+    <formatName>Content Standard for Digital Geospatial Metadata, Metadata Profile for Shoreline Data, version 001.2-1999</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>FGDC-STD-001-1998</formatId>
-    <formatName> Content Standard for Digital Geospatial Metadata, version 001-1998 </formatName>
+    <formatName>Content Standard for Digital Geospatial Metadata, version 001-1998</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>INCITS 453-2009</formatId>
-    <formatName> North American Profile of ISO 19115: 2003 Geographic Information - Metadata </formatName>
+    <formatName>North American Profile of ISO 19115: 2003 Geographic Information - Metadata</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
@@ -370,42 +376,42 @@ __DATA__
   </objectFormat>
   <objectFormat>
     <formatId>CF-1.0</formatId>
-    <formatName> NetCDF Climate and Forecast Metadata Convention, version 1.0 </formatName>
+    <formatName>NetCDF Climate and Forecast Metadata Convention, version 1.0</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>CF-1.1</formatId>
-    <formatName> NetCDF Climate and Forecast Metadata Convention, version 1.1 </formatName>
+    <formatName>NetCDF Climate and Forecast Metadata Convention, version 1.1</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>CF-1.2</formatId>
-    <formatName> NetCDF Climate and Forecast Metadata Convention, version 1.2 </formatName>
+    <formatName>NetCDF Climate and Forecast Metadata Convention, version 1.2</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>CF-1.3</formatId>
-    <formatName> NetCDF Climate and Forecast Metadata Convention, version 1.3 </formatName>
+    <formatName>NetCDF Climate and Forecast Metadata Convention, version 1.3</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>CF-1.4</formatId>
-    <formatName> NetCDF Climate and Forecast Metadata Convention, version 1.4 </formatName>
+    <formatName>NetCDF Climate and Forecast Metadata Convention, version 1.4</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.cuahsi.org/waterML/1.0/</formatId>
-    <formatName> Water Markup Language, version 1.0 </formatName>
+    <formatName>Water Markup Language, version 1.0</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.cuahsi.org/waterML/1.1/</formatId>
-    <formatName> Water Markup Language, version 1.0 </formatName>
+    <formatName>Water Markup Language, version 1.0</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.loc.gov/METS/</formatId>
-    <formatName> Metadata Encoding and Transmission Standard, version 1 </formatName>
+    <formatName>Metadata Encoding and Transmission Standard, version 1</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
@@ -529,8 +535,13 @@ __DATA__
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
+    <formatId>http://datadryad.org/profile/v3.1/dryad.xsd</formatId>
+    <formatName>Dryad Metadata Application Profile Version 3.1</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
     <formatId>http://purl.org/dryad/terms/</formatId>
-    <formatName> Dryad repository object description metadata</formatName>
+    <formatName>Dryad Metadata Application Profile Version 3.0</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
