@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="95" start="0" total="95" 
+<d1:objectFormatList count="96" start="0" total="96" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -168,32 +168,32 @@
   <objectFormat>
     <formatId>http://www.w3.org/2005/Atom</formatId>
     <formatName>ATOM-1.0</formatName>
-    <formatType>RESOURCE</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>text/n3</formatId>
     <formatName>N3</formatName>
-    <formatType>RESOURCE</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>text/turtle</formatId>
     <formatName>TURTLE</formatName>
-    <formatType>RESOURCE</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.w3.org/TR/rdf-testcases/#ntriples</formatId>
     <formatName>N-TRIPLE</formatName>
-    <formatType>RESOURCE</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.w3.org/TR/rdf-syntax-grammar</formatId>
     <formatName>RDF/XML</formatName>
-    <formatType>RESOURCE</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.w3.org/TR/rdfa-syntax</formatId>
     <formatName>RDFa</formatName>
-    <formatType>RESOURCE</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>http://www.openarchives.org/ore/terms</formatId>
@@ -266,8 +266,15 @@
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
+    <!-- See http://www.ietf.org/rfc/rfc3023.txt to differentiate from application/xml -->
     <formatId>text/xml</formatId>
     <formatName>Extensible Markup Language</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
+      <!-- See http://www.ietf.org/rfc/rfc3023.txt to differentiate from text/xml -->
+    <formatId>application/xml</formatId>
+    <formatName>Extensible Markup Language Application</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
