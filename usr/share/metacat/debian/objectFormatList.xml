@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="96" start="0" total="96" 
+<d1:objectFormatList count="99" start="0" total="99" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -322,6 +322,12 @@
     <!-- http://en.wikipedia.org/wiki/Audio_Video_Interleave -->
     <formatId>video/avi</formatId>
     <formatName>Microsoft Audio Video Interleave (AVI) File</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- http://en.wikipedia.org/wiki/MPEG-1 -->
+    <formatId>video/mpeg</formatId>
+    <formatName>MPEG-1 Video</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
