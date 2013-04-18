@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="99" start="0" total="99" 
+<d1:objectFormatList count="101" start="0" total="101" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -316,6 +316,18 @@
   <objectFormat>
     <formatId>application/x-python</formatId>
     <formatName>Python Script</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- https://en.wikipedia.org/wiki/Wmv -->
+    <formatId>video/x-ms-wmv</formatId>
+    <formatName>Windows Media Video File</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- https://en.wikipedia.org/wiki/Windows_Media_Audio -->
+    <formatId>audio/x-ms-wma</formatId>
+    <formatName>Windows Media Audio File</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
