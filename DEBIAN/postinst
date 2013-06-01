@@ -50,7 +50,6 @@ METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temp
 METACAT_CLIENT_TIMEOUT=300000
 
 D1_CONF=/etc/dataone
-NODE_PROPS="$D1_CONF/node.properties"
 
 case "${ACTION}" in
     abort-remove)
@@ -73,7 +72,9 @@ case "${ACTION}" in
         
         HAZELCAST_INTERFACE=""
         SPACER="        "
-        for ip in `egrep 'cn.iplist=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
+        db_get dataone-cn-os-core/cn.iplist
+        IP_LIST=(${RET})
+        for ip in ${IPLIST[@]}
         do
             IP_XML_NODE="<interface>${ip}<\/interface>"
             HAZELCAST_INTERFACE=${HAZELCAST_INTERFACE}${IP_XML_NODE}'\n'${SPACER}
@@ -84,23 +85,32 @@ case "${ACTION}" in
         sed -i.bak --regexp-extended "s/<interface>127\.0\.0\.1<\/interface>/${HAZELCAST_INTERFACE}/;" ${D1_CONF}/storage/hazelcast.xml
         
         #<interface>127.0.0.1</interface>
-        
-        NODE_ID=`egrep 'cn.nodeId=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
-        D1CLIENT_CERTIFICATE_DIRECTORY=`egrep 'D1Client.certificate.directory=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
-        D1CLIENT_CERTIFICATE_FILENAME=`egrep 'D1Client.certificate.filename=' ${NODE_PROPS}  | awk 'BEGIN { FS = "=" } ; { print $2 }'`
-        D1ClIENT_CERTIFICATE=${D1CLIENT_CERTIFICATE_DIRECTORY}'/'${D1CLIENT_CERTIFICATE_FILENAME}
-        
+		db_get "dataone-cn-os-core/cn.nodeid"
+		NODE_ID=$RET
+
+		db_get "dataone-cn-os-core/cn.client.certificate.dir"
+		D1CLIENT_CERTIFICATE_DIRECTORY=$RET
+
+		db_get "dataone-cn-os-core/cn.client.key.dir"
+		D1CLIENT_KEY_DIRECTORY=$RET
+
+		db_get "dataone-cn-os-core/cn.client.certificate.filename"
+		D1CLIENT_CERTIFICATE_FILENAME=$RET
+
+        D1ClIENT_CERTIFICATE=${D1CLIENT_KEY_DIRECTORY}'/'${D1CLIENT_CERTIFICATE_FILENAME}
         D1ClIENT_CERTIFICATE=${D1ClIENT_CERTIFICATE//\//\\\/}
         
         ###############################################################################
         # Prompt for Metacat replication properties
         ###############################################################################
         db_get dataone-cn-os-core/cn.replication.certificate.filename
-        METACAT_REPLICATION_CERTIFICATE=${RET}
+        METACAT_REPLICATION_CERTIFICATE_FILENAME=${RET}
+        METACAT_REPLICATION_CERTIFICATE=${D1CLIENT_CERTIFICATE_DIRECTORY}'/'${METACAT_REPLICATION_CERTIFICATE_FILENAME}
         METACAT_REPLICATION_CERTIFICATE=${METACAT_REPLICATION_CERTIFICATE//\//\\\/}
         
         db_get dataone-cn-os-core/cn.replication.privatekey.filename
-        METACAT_REPLICATION_KEY=${RET}
+        METACAT_REPLICATION_KEY_FILENAME=${RET}
+        METACAT_REPLICATION_KEY=${D1CLIENT_KEY_DIRECTORY}'/'${METACAT_REPLICATION_KEY_FILENAME}
         METACAT_REPLICATION_KEY=${METACAT_REPLICATION_KEY//\//\\\/}
         
         ###############################################################################
@@ -147,7 +157,9 @@ case "${ACTION}" in
         #HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;exit;} END{print $hostname}' /etc/hosts`
         
         ## replace the token HOSTNAME in the site file to a hostname as found by issuing a hostname -f
-        HOSTNAME=`/bin/hostname -f`
+        db_get "dataone-cn-os-core/cn.hostname"
+        HOSTNAME=$RET
+
         
         if [ "$HOSTNAME" != "" ]
         then
@@ -325,17 +337,14 @@ case "${ACTION}" in
         
         /etc/init.d/${TOMCAT} start
         
-        db_get dataone-cn-os-core/cn.iplist
-        IP_LIST=${RET}
-        
-        if [[ "${IP_LIST}" == [1-9]* ]]; then
-            for IP in ${IP_LIST}
-                do
-                    #open up the correct port for hazelcast
-                    log "Added 'ufw allow to any port 5701 from ${IP}' rule"
-                    ufw allow to any port 5701 from ${IP}
-                done
-        fi
+
+		for IP in ${IPLIST[@]}
+			do
+				#open up the correct port for hazelcast
+				log "Added 'ufw allow to any port 5701 from ${IP}' rule"
+				ufw allow to any port 5701 from ${IP}
+			done
+
         db_stop
     else
         log "Already configured, skipping posinst"
