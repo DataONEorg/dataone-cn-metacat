@@ -152,16 +152,13 @@ case "${ACTION}" in
         
         mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
         
-        ## replace the token HOSTNAME in the properties file to a hostname beginning with cn in the /etc/hosts file
         sleep 5
-        #HOSTNAME=`/usr/bin/perl -nle 'if (/^([\d\.]+)\s+(cn[^\s]+)\s*/) {$hostname= $2;exit;} END{print $hostname}' /etc/hosts`
-        
-        ## replace the token HOSTNAME in the site file to a hostname as found by issuing a hostname -f
+
+        ## replace the token HOSTNAME in the site file to a hostname as found in debian backend db
         db_get "dataone-cn-os-core/cn.hostname"
         HOSTNAME=$RET
 
-        
-        if [ "$HOSTNAME" != "" ]
+        if [ -n "$HOSTNAME" ]
         then
                 sed -i.bak --regexp-extended  "s/(server\.name=).*/\1${HOSTNAME}/;" ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
         else
