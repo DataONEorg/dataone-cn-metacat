@@ -73,7 +73,7 @@ case "${ACTION}" in
         HAZELCAST_INTERFACE=""
         SPACER="        "
         db_get dataone-cn-os-core/cn.iplist
-        IP_LIST=(${RET})
+        IPLIST=(${RET})
         for ip in ${IPLIST[@]}
         do
             IP_XML_NODE="<interface>${ip}<\/interface>"
