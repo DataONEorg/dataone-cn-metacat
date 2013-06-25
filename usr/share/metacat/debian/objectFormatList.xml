@@ -216,7 +216,7 @@
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
-    <formatId>http://datadryad.org/profile/v3.1/dryad.xsd</formatId>
+    <formatId>http://datadryad.org/profile/v3.1</formatId>
     <formatName>Dryad Metadata Application Profile Version 3.1</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
