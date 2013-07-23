@@ -85,16 +85,16 @@ case "${ACTION}" in
         sed -i.bak --regexp-extended "s/<interface>127\.0\.0\.1<\/interface>/${HAZELCAST_INTERFACE}/;" ${D1_CONF}/storage/hazelcast.xml
         
         #<interface>127.0.0.1</interface>
-		db_get "dataone-cn-os-core/cn.nodeid"
+		db_get dataone-cn-os-core/cn.nodeid
 		NODE_ID=$RET
 
-		db_get "dataone-cn-os-core/cn.client.certificate.dir"
+		db_get dataone-cn-os-core/cn.client.certificate.dir
 		D1CLIENT_CERTIFICATE_DIRECTORY=$RET
 
-		db_get "dataone-cn-os-core/cn.client.key.dir"
+		db_get dataone-cn-os-core/cn.client.key.dir
 		D1CLIENT_KEY_DIRECTORY=$RET
 
-		db_get "dataone-cn-os-core/cn.client.certificate.filename"
+		db_get dataone-cn-os-core/cn.client.certificate.filename
 		D1CLIENT_CERTIFICATE_FILENAME=$RET
 
         D1ClIENT_CERTIFICATE=${D1CLIENT_KEY_DIRECTORY}'/'${D1CLIENT_CERTIFICATE_FILENAME}
@@ -155,7 +155,7 @@ case "${ACTION}" in
         sleep 5
 
         ## replace the token HOSTNAME in the site file to a hostname as found in debian backend db
-        db_get "dataone-cn-os-core/cn.hostname"
+        db_get dataone-cn-os-core/cn.hostname
         HOSTNAME=$RET
 
         if [ -n "$HOSTNAME" ]
