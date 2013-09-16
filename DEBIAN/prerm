@@ -56,3 +56,5 @@ fi
 #    # purge unneeded selections for metacat on removal
 #    db_purge
 #fi
+
+exit 0
