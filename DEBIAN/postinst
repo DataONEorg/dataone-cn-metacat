@@ -35,7 +35,7 @@ TOMCAT=tomcat6
 TOMCAT_USER=tomcat6
 TOMCAT_HOME=/var/lib/tomcat6
 APACHE_CONF=/etc/apache2
-JK_CONF=knb_jk.conf
+JK_CONF=metacat_jk.conf
 
 SYSCTL_CONF=/etc/sysctl.conf
 PG=postgresql-8.4
@@ -46,7 +46,7 @@ DB_PASS=metacat
 SOURCE_DIR=/usr/share/metacat
 SCRIPT_DIR=${SOURCE_DIR}/debian
 METACAT_VAR=/var/metacat
-METACAT_VAR_SUBDIRS=".knb logs data inline-data documents expanded-archives temporary"
+METACAT_VAR_SUBDIRS=".metacat logs data inline-data documents expanded-archives temporary"
 METACAT_CLIENT_TIMEOUT=300000
 
 D1_CONF=/etc/dataone
@@ -122,35 +122,35 @@ case "${ACTION}" in
         /etc/init.d/${TOMCAT} stop
         
         ## backup the old war file
-        if [ -e ${TOMCAT_HOME}/webapps/knb.war.current ]
+        if [ -e ${TOMCAT_HOME}/webapps/metacat.war.current ]
         then
-          log "Backing up ${TOMCAT_HOME}/webapps/knb.war to ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}"
-          mv ${TOMCAT_HOME}/webapps/knb.war.current ${TOMCAT_HOME}/webapps/knb.war.${LONG_DATE}
+          log "Backing up ${TOMCAT_HOME}/webapps/metacat.war to ${TOMCAT_HOME}/webapps/metacat.war.${LONG_DATE}"
+          mv ${TOMCAT_HOME}/webapps/metacat.war.current ${TOMCAT_HOME}/webapps/metacat.war.${LONG_DATE}
         fi  
         
-        ## remove the knb application directory
-        if [ -d ${TOMCAT_HOME}/webapps/knb ]
+        ## remove the metacat application directory
+        if [ -d ${TOMCAT_HOME}/webapps/metacat ]
         then
           log "Removing the old metacat application directories"
-          rm -rf ${TOMCAT_HOME}/webapps/knb
+          rm -rf ${TOMCAT_HOME}/webapps/metacat
         fi 
         
         ## copy the new war file into the webapps directory
-        log "copying new knb.war file to ${TOMCAT_HOME}/webapps/knb.war"
-        cp ${SOURCE_DIR}/knb.war ${TOMCAT_HOME}/webapps/knb.war
+        log "copying new metacat.war file to ${TOMCAT_HOME}/webapps/metacat.war"
+        cp ${SOURCE_DIR}/metacat.war ${TOMCAT_HOME}/webapps/metacat.war
         
         ## expand the war file
         CURR_DIR=`pwd`
         
-        ## make knb directory and extract knb.war into it.
-        log "Making knb application directory: ${TOMCAT_HOME}/webapps/knb"
-        mkdir ${TOMCAT_HOME}/webapps/knb
-        cd ${TOMCAT_HOME}/webapps/knb
+        ## make metacat directory and extract metacat.war into it.
+        log "Making metacat application directory: ${TOMCAT_HOME}/webapps/metacat"
+        mkdir ${TOMCAT_HOME}/webapps/metacat
+        cd ${TOMCAT_HOME}/webapps/metacat
         
-        log "extracting knb.war into ${TOMCAT_HOME}/webapps/knb"
-        jar -xvf ${TOMCAT_HOME}/webapps/knb.war > /dev/null
+        log "extracting metacat.war into ${TOMCAT_HOME}/webapps/metacat"
+        jar -xvf ${TOMCAT_HOME}/webapps/metacat.war > /dev/null
         
-        mv ${TOMCAT_HOME}/webapps/knb.war ${TOMCAT_HOME}/webapps/knb.war.current
+        mv ${TOMCAT_HOME}/webapps/metacat.war ${TOMCAT_HOME}/webapps/metacat.war.current
         
         sleep 5
 
@@ -160,9 +160,9 @@ case "${ACTION}" in
 
         if [ -n "$HOSTNAME" ]
         then
-                sed -i.bak --regexp-extended  "s/(server\.name=).*/\1${HOSTNAME}/;" ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+                sed -i.bak --regexp-extended  "s/(server\.name=).*/\1${HOSTNAME}/;" ${TOMCAT_HOME}/webapps/metacat/WEB-INF/metacat.properties
         else
-                log "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties"
+                log "HOSTNAME can not be set in ${TOMCAT_HOME}/webapps/metacat/WEB-INF/metacat.properties"
         fi
         
         # get the CN RR entry
@@ -171,8 +171,8 @@ case "${ACTION}" in
         
         # change a lot of properties for this configuration
         sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/webapps/;
-                s/(application\.backupDir=).*/\1\/var\/metacat\/\.knb/;
-                s/(application\.context=).*/\1knb/;
+                s/(application\.backupDir=).*/\1\/var\/metacat\/\.metacat/;
+                s/(application\.context=).*/\1metacat/;
                 s/(application\.debugOutputFile=).*/\1\/var\/metacat\/temporary\/metacat.debug/;
                 s/(application\.delimiteredOutputFile=).*/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
                 s/(database\.user=).*/\1metacat/;
@@ -192,19 +192,19 @@ case "${ACTION}" in
                 s/(dataone\.nodeType=).*/\1cn/;
                 s/(dataone\.nodeId=).*/\1${NODE_ID}/;
                 s/(#)(dataone\.hazelcast\.configFilePath=\/etc\/dataone\/storage\/hazelcast\.xml)/\2/;"\
-                ${TOMCAT_HOME}/webapps/knb/WEB-INF/metacat.properties
+                ${TOMCAT_HOME}/webapps/metacat/WEB-INF/metacat.properties
         
         # the CN has its own log4j configuration
         
-        cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/knb/WEB-INF/
-        chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/knb
+        cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/metacat/WEB-INF/
+        chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/metacat
         log "cd to $CURR_DIR"
         cd $CURR_DIR
         
         # Ensure tomcat6 is in the ssl-cert group to read private keys
         usermod -a -G ssl-cert ${TOMCAT_USER}
         
-        chmod -R  +x ${TOMCAT_HOME}/webapps/knb/cgi-bin
+        chmod -R  +x ${TOMCAT_HOME}/webapps/metacat/cgi-bin
         
         ###############################################################################
         # Create Metacat External File Space
@@ -242,7 +242,7 @@ case "${ACTION}" in
         #cp ${SCRIPT_DIR}/server.xml ${TOMCAT_HOME}/conf/
         
         # Configure the context file
-        cp ${SCRIPT_DIR}/knb.xml ${TOMCAT_HOME}/conf/Catalina/localhost/
+        cp ${SCRIPT_DIR}/metacat.xml ${TOMCAT_HOME}/conf/Catalina/localhost/
         
         # Add permissions needed by metacat and geoserver
         cp ${SCRIPT_DIR}/51metacat.policy ${TOMCAT_HOME}/conf/policy.d/

@@ -1,4 +1,4 @@
 <IfModule mod_jk.c>
-	JkMount /authority knb
-	JkMount /authority/* knb
+	JkMount /authority metacat
+	JkMount /authority/* metacat
 </IfModule>

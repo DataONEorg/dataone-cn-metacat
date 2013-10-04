@@ -57,7 +57,7 @@ if [[ ! "$xmlstarletLocation" =~ "xmlstarlet" ]]; then
     exit 1;
 fi
 
-baseURL="https://localhost/knb/metacat";
+baseURL="https://localhost/metacat/metacat";
 action="login";
 username="uid=dataone_cn_metacat,o=DATAONE,dc=ecoinformatics,dc=org";
 docid="OBJECT_FORMAT_LIST.1";

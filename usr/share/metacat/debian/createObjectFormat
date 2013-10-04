@@ -264,7 +264,7 @@ use strict;
 #
 ############################################################################
 
-my $url = 'https://localhost/knb/metacat/'; 
+my $url = 'https://localhost/metacat/metacat/'; 
 my $dn = 'uid=dataone_cn_metacat,o=DATAONE,dc=ecoinformatics,dc=org';
 my $password = "";
 print "Please enter dataone_cn_metacat's password: ";

@@ -2,6 +2,6 @@
 
 // These permissions are granted by default to the Metacat application
 //
-grant codeBase "file:${catalina.base}/webapps/knb/-" {
+grant codeBase "file:${catalina.base}/webapps/metacat/-" {
         permission java.security.AllPermission;
 };
