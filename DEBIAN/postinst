@@ -297,6 +297,25 @@ case "${ACTION}" in
             sed -i.bak  's/\(shared_buffers\s*\=\s*\)[\d]+MB/\1 2048MB/;' ${PG_CONF}/postgresql.conf
         fi
         
+        ## Get the amount of ram 
+        MEMORY_SIZE=$(free -m | grep 'Mem' | sed 's/^Mem:\s*\([0-9]*\).*/\1/')
+        
+        ## Set the effective_cache_size to half of available ram
+        EFFECTIVE_CACHE_SIZE=$(expr ${MEMORY_SIZE} / 2)
+        sed -i.bak "s/^[# ]*effective_cache_size\s*=.*/effective_cache_size = ${EFFECTIVE_CACHE_SIZE}MB/" ${PG_CONF}/postgresql.conf
+        
+        ## Set work_mem to 1/3 the amount of RAM / the number of connections except 
+        ## in case of small RAM sizes (<4000MB) where it will 1/5 instead of 1/3
+        if [[ ${MEMORY_SIZE} -lt 4000 ]]; then
+           WORK_MEM_FACTOR=5
+        else
+           WORK_MEM_FACTOR=3
+        fi
+        
+        MAX_CONNECTIONS=$(egrep "max_connections *=" ${PG_CONF}/postgresql.conf | cut -d# -f1 | cut -d= -f2 | tr -d " ")
+        WORK_MEM=$(expr ${MEMORY_SIZE} / ${WORK_MEM_FACTOR} / ${MAX_CONNECTIONS})
+        sed -i.bak "s/^[# ]*work_mem\s*=.*/work_mem = ${WORK_MEM}MB/" ${PG_CONF}/postgresql.conf
+        
         ## with higher memory requirements for postgresql, increase kernel.shmmax to 3GB          
         SHMMAX=$(egrep "kernel\.shmmax=" ${SYSCTL_CONF}  | cut -d= -f2 | cut -d# -f1 | tr -d " ")
         if [[ "${SHMMAX}" != "3221225472" ]]; then
