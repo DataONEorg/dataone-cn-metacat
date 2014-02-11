@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="101" start="0" total="101" 
+<d1:objectFormatList count="104" start="0" total="104" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -181,6 +181,12 @@
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
+    <!-- https://tools.ietf.org/html/rfc3870-->
+    <formatId>application/rdf+xml</formatId>
+    <formatName>Resource Description Framework</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
     <formatId>http://www.w3.org/TR/rdf-testcases/#ntriples</formatId>
     <formatName>N-TRIPLE</formatName>
     <formatType>DATA</formatType>
@@ -343,6 +349,12 @@
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
+    <!-- https://en.wikipedia.org/wiki/MP3 -->
+    <formatId>audio/mpeg</formatId>
+    <formatName>MPEG-1 or MPEG-2 Audio Layer III</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
     <!-- http://en.wikipedia.org/wiki/Mp4 -->
     <formatId>video/mp4</formatId>
     <formatName>MPEG-4 Video</formatName>
@@ -361,15 +373,32 @@
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
+    <!-- https://en.wikipedia.org/wiki/Kml -->
+    <formatId>application/vnd.google-earth.kml+xml</formatId>
+    <formatName>Google Earth Keyhole Markup Language (KML)</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
     <!-- http://en.wikipedia.org/wiki/RAR -->
     <formatId>application/x-rar-compressed</formatId>
     <formatName>Roshal Archive File</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
-    <!-- http://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet -->
     <formatId>application/vnd.ms-excel.sheet.binary.macroEnabled.12</formatId>
     <formatName>Microsoft Office Excel 2007 binary workbooks</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- http://www.iana.org/assignments/media-types/application/vnd.ms-powerpoint -->
+    <formatId>application/vnd.ms-powerpoint</formatId>
+    <formatName>Microsoft Office Powerpoint</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- http://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.presentationml.presentation -->
+    <formatId>application/vnd.openxmlformats-officedocument.presentationml.presentation</formatId>
+    <formatName>Microsoft Office OpenXML Presentation</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
