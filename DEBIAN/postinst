@@ -175,6 +175,7 @@ case "${ACTION}" in
                 s/(application\.context=).*/\1metacat/;
                 s/(application\.debugOutputFile=).*/\1\/var\/metacat\/temporary\/metacat.debug/;
                 s/(application\.delimiteredOutputFile=).*/\1\/var\/metacat\/temporary\/metacat\.debug\.delimitered/;
+                s/(auth\.class=).*/\1edu\.ucsb\.nceas\.metacat\.AuthLdap/;                
                 s/(database\.user=).*/\1metacat/;
                 s/(database\.password=).*/\1metacat/;
                 s/(database\.type=).*/\1postgres/;
