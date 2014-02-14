@@ -192,6 +192,7 @@ case "${ACTION}" in
                 s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
                 s/(dataone\.nodeType=).*/\1cn/;
                 s/(dataone\.nodeId=).*/\1${NODE_ID}/;
+                s/(database\.usexmlindex=).*/\1false/;
                 s/(#)(dataone\.hazelcast\.configFilePath=\/etc\/dataone\/storage\/hazelcast\.xml)/\2/;"\
                 ${TOMCAT_HOME}/webapps/metacat/WEB-INF/metacat.properties
         
