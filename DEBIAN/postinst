@@ -11,7 +11,7 @@ fi
 D1_LOG_DIR=/var/log/dataone
 if [ ! -e ${D1_LOG_DIR} ]; then
     mkdir -p ${D1_LOG_DIR}
-    chown tomcat6:tomcat6 ${D1_LOG_DIR}
+    chown tomcat7:tomcat7 ${D1_LOG_DIR}
 fi
 
 # functions to echo to STDERR or the install log instead of STDOUT
@@ -31,15 +31,15 @@ NEW_VERSION=${2}
 
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
-TOMCAT=tomcat6
-TOMCAT_USER=tomcat6
-TOMCAT_HOME=/var/lib/tomcat6
+TOMCAT=tomcat7
+TOMCAT_USER=tomcat7
+TOMCAT_HOME=/var/lib/tomcat7
 APACHE_CONF=/etc/apache2
 JK_CONF=metacat_jk.conf
 
 SYSCTL_CONF=/etc/sysctl.conf
-PG=postgresql-8.4
-PG_CONF=/etc/postgresql/8.4/main
+PG=postgresql
+PG_CONF=/etc/postgresql/9.1/main
 PG_USER=postgres
 DB_USER=metacat
 DB_PASS=metacat
@@ -170,7 +170,7 @@ case "${ACTION}" in
         CN_ROUTER_HOSTNAME=${RET}
         
         # change a lot of properties for this configuration
-        sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat6\/webapps/;
+        sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat7\/webapps/;
                 s/(application\.backupDir=).*/\1\/var\/metacat\/\.metacat/;
                 s/(application\.context=).*/\1metacat/;
                 s/(application\.debugOutputFile=).*/\1\/var\/metacat\/temporary\/metacat.debug/;
@@ -199,11 +199,11 @@ case "${ACTION}" in
         # the CN has its own log4j configuration
         
         cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/metacat/WEB-INF/
-        chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${TOMCAT_HOME}/webapps/metacat
+        chown -R ${TOMCAT_USER}:${TOMCAT_USER} ${TOMCAT_HOME}/webapps/metacat
         log "cd to $CURR_DIR"
         cd $CURR_DIR
         
-        # Ensure tomcat6 is in the ssl-cert group to read private keys
+        # Ensure tomcat7 is in the ssl-cert group to read private keys
         usermod -a -G ssl-cert ${TOMCAT_USER}
         
         chmod -R  +x ${TOMCAT_HOME}/webapps/metacat/cgi-bin
@@ -221,7 +221,7 @@ case "${ACTION}" in
         
         ## Change the ownership of the /var/metacat directory to be the tomcat user.
         log "changing ownership of /var/metacat to ${TOMCAT_USER}"
-        chown -R ${TOMCAT_USER}.${TOMCAT_USER} ${METACAT_VAR}
+        chown -R ${TOMCAT_USER}:${TOMCAT_USER} ${METACAT_VAR}
         
         ## Create the dataone logging directory
         for SUBDIR in ${METACAT_VAR_SUBDIRS}
@@ -232,7 +232,7 @@ case "${ACTION}" in
               log "Making Metacat application directory: ${FULL_VAR_SUBDIR}"
               mkdir ${FULL_VAR_SUBDIR}
               log "changing ownership of ${FULL_VAR_SUBDIR}  to ${TOMCAT_USER}"
-              chown ${TOMCAT_USER}.${TOMCAT_USER} ${FULL_VAR_SUBDIR}
+              chown ${TOMCAT_USER}:${TOMCAT_USER} ${FULL_VAR_SUBDIR}
             fi
         done
         ###############################################################################

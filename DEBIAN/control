@@ -3,7 +3,7 @@ Version: 2.4.1
 Section: utils
 Priority: optional
 Architecture: all
-Depends: dataone-cn-os-core, sun-java6-jdk, tomcat6, tomcat6-admin, postgresql, dataone-cn-version-tool
+Depends: dataone-cn-os-core, openjdk-7-jdk, tomcat7, tomcat7-admin, postgresql, dataone-cn-version-tool
 Installed-Size: 1 kb
 Maintainer: Matt Jones <jones@nceas.ucsb.edu>
 Description: This is a metapackage that installs the metacat dependencies that are needed to build a coordinating node instance, and then installs and configures the Metacat system itself.
