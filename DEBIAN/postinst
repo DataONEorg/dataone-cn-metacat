@@ -50,6 +50,8 @@ METACAT_VAR_SUBDIRS=".metacat logs data inline-data documents expanded-archives 
 METACAT_CLIENT_TIMEOUT=300000
 
 D1_CONF=/etc/dataone
+ETC_CRON_DAILY_DIR=/etc/cron.daily
+ETC_CRON_MONTHLY_DIR=/etc/cron.monthly
 
 case "${ACTION}" in
     abort-remove)
@@ -362,6 +364,9 @@ case "${ACTION}" in
 				log "Added 'ufw allow to any port 5701 from ${IP}' rule"
 				ufw allow to any port 5701 from ${IP}
 			done
+
+		cp ${SCRIPT_DIR}/pgsql-daily ${ETC_CRON_DAILY_DIR}/pgsql
+		cp ${SCRIPT_DIR}/pgsql-monthly ${ETC_CRON_MONTHLY_DIR}/pgsql
 
         db_stop
     else

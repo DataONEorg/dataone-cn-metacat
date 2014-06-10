@@ -1,0 +1,28 @@
+#!/bin/bash
+DUMP_DATE=$(date +%F-%H%M);
+DUMP_CMD="/usr/bin/pg_dump";
+DUMP_OPTS="-Fc";
+DUMP_DB="metacat";
+DUMP_DIR="/var/postgres-bak/";
+DUMP_DIR_MONTHS="/var/postgres-bak/months";
+DUMP_DIR="/var/postgres-bak/";
+DUMP_FILE="metacatDB.${DUMP_DATE}.dump";
+DUMP_ERR="metacatDB.${DUMP_DATE}.err";
+
+if [[ ! -d ${DUMP_DIR} ]]; then
+    mkdir ${DUMP_DIR};
+    chown -R postgres ${DUMP_DIR};
+fi
+
+if [[ ! -d ${DUMP_DIR_MONTHS} ]]; then
+    mkdir ${DUMP_DIR_MONTHS};
+    chown -R postgres ${DUMP_DIR_MONTHS};
+fi
+
+
+find ${DUMP_DIR} -daystart -mtime +31 -regextype posix-extended  -regex '${DUMP_DIR}metacatDB.[0-9]{4}.[0-9]{2}.01.[0-9]{4}.(dump|err)' -exec mv {} ${DUMP_DIR_MONTHS} \;
+
+find ${DUMP_DIR} -daystart -mtime +32 -regextype posix-extended  -regex '${DUMP_DIR}metacatDB.[0-9]{4}.[0-9]{2}.[0-9]{2}.[0-9]{4}.err' -exec rm {} \;
+
+nohup su postgres -c "${DUMP_CMD} ${DUMP_OPTS} ${DUMP_DB}" > ${DUMP_DIR}${DUMP_FILE} 2> ${DUMP_DIR}${DUMP_ERR} < /dev/null &
+

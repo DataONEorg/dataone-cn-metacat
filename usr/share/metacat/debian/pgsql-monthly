@@ -1,0 +1,18 @@
+#!/bin/bash
+
+DUMP_DIR_MONTHS="/var/postgres-bak/months";
+DUMP_DIR_YEARS="/var/postgres-bak/years";
+
+if [[ ! -d ${DUMP_DIR_MONTHS} ]]; then
+    mkdir ${DUMP_DIR_MONTHS};
+    chown -R postgres ${DUMP_DIR_MONTHS};
+fi
+
+if [[ ! -d ${DUMP_DIR_YEARS} ]]; then
+    mkdir ${DUMP_DIR_YEARS};
+    chown -R postgres ${DUMP_DIR_YEARS};
+fi
+
+find ${DUMP_DIR_MONTHS} -daystart -mtime +366 -regextype posix-extended  -regex '${DUMP_DIR_MONTHS}metacatDB.[0-9]{4}.01.01.[0-9]{4}.(dump|err)' -exec mv {} ${DUMP_DIR_YEARS} \;
+
+find ${DUMP_DIR_MONTHS} -daystart -mtime +397 -regextype posix-extended  -regex '${DUMP_DIR_MONTHS}metacatDB.[0-9]{4}.[0-9]{2}.[0-9]{2}.[0-9]{4}.err'  -exec rm {} \;
