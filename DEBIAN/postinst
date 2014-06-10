@@ -367,7 +367,8 @@ case "${ACTION}" in
 
 		cp ${SCRIPT_DIR}/pgsql-daily ${ETC_CRON_DAILY_DIR}/pgsql
 		cp ${SCRIPT_DIR}/pgsql-monthly ${ETC_CRON_MONTHLY_DIR}/pgsql
-
+		chmod 755 ${ETC_CRON_DAILY_DIR}/pgsql
+		chmod 755 ${ETC_CRON_MONTHLY_DIR}/pgsql
         db_stop
     else
         log "Already configured, skipping posinst"
