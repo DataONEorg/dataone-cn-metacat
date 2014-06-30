@@ -1,18 +1,43 @@
 #!/bin/bash
-
 DUMP_DIR_MONTHS="/var/postgres-bak/months";
 DUMP_DIR_YEARS="/var/postgres-bak/years";
+DUMP_LOG="/var/log/dataone/pgsql-monthly-dump.log"
+function log()
+{
+        #
+        # Set Up logging
+        # Reminder: don't echo to stdout, it messes up debconf
+        #
+    now=$(date "+%Y-%m-%d %H:%M:%S %Z: ")
+    echo -e "${now} crontab pgsql monthly $@" >> ${DUMP_LOG}
+}
+log "starting"
 
 if [[ ! -d ${DUMP_DIR_MONTHS} ]]; then
-    mkdir ${DUMP_DIR_MONTHS};
-    chown -R postgres ${DUMP_DIR_MONTHS};
+  if ! (/bin/mkdir ${DUMP_DIR_MONTHS} >> ${DUMP_LOG} 2>&1); then
+    log "/bin/mkdir ${DUMP_DIR_MONTHS} failed"
+  fi
+  if ! (/bin/chown -R postgres ${DUMP_DIR_MONTHS} >> ${DUMP_LOG} 2>&1); then
+    log "/bin/chown -R postgres ${DUMP_DIR_MONTHS}"
+  fi
 fi
 
 if [[ ! -d ${DUMP_DIR_YEARS} ]]; then
-    mkdir ${DUMP_DIR_YEARS};
-    chown -R postgres ${DUMP_DIR_YEARS};
+  if ! (/bin/mkdir ${DUMP_DIR_YEARS} >> ${DUMP_LOG} 2>&1); then
+    log "/bin/mkdir ${DUMP_DIR_YEARS} failed"
+  fi
+  if ! (/bin/chown -R postgres ${DUMP_DIR_YEARS} >> ${DUMP_LOG} 2>&1); then
+    log "/bin/chown -R postgres ${DUMP_DIR_YEARS}"
+  fi
 fi
 
-find ${DUMP_DIR_MONTHS} -daystart -mtime +366 -regextype posix-extended  -regex '${DUMP_DIR_MONTHS}metacatDB.[0-9]{4}.01.01.[0-9]{4}.(dump|err)' -exec mv {} ${DUMP_DIR_YEARS} \;
+if ! (/usr/bin/find ${DUMP_DIR_MONTHS} -daystart -mtime +366 -regextype posix-extended  -regex "${DUMP_DIR_MONTHS}metacatDB.[0-9]{4}.01.01.[0-9]{4}.(dump|err)" -exec /bin/mv {} ${DUMP_DIR_YEARS} \; >> ${DUMP_LOG} 2>&1); then
+  log "unable to find and move yearly dump"
+else
+  log "found and moved yearly dumps if there were any"
+  if ! (/usr/bin/find ${DUMP_DIR_MONTHS} -daystart -mtime +397 -regextype posix-extended  -regex "${DUMP_DIR_MONTHS}metacatDB.[0-9]{4}.[0-9]{2}.[0-9]{2}.[0-9]{4}.err"  -exec /bin/rm {} \; >> ${DUMP_LOG} 2>&1); then
+    log "unable to remove monthly dump files"
+  fi
+fi
 
-find ${DUMP_DIR_MONTHS} -daystart -mtime +397 -regextype posix-extended  -regex '${DUMP_DIR_MONTHS}metacatDB.[0-9]{4}.[0-9]{2}.[0-9]{2}.[0-9]{4}.err'  -exec rm {} \;
+log "completed"
