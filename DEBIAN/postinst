@@ -190,6 +190,7 @@ case "${ACTION}" in
                 s/(replication\.privatekey\.password=).*/\1${METACAT_REPLICATION_KEY_PASSWORD}/;
                 s/(replication\.client\.timeout=).*/\1${METACAT_CLIENT_TIMEOUT}/;
                 s/(spatial\.regenerateCacheOnRestart=).*/\1false/;
+                s/(spatial\.runSpatialOption=).*/\1false/;
                 s/(D1Client\.CN_URL=).*/\1https\:\/\/${CN_ROUTER_HOSTNAME}\/cn/;
                 s/(D1Client\.certificate\.file=).*/\1${D1ClIENT_CERTIFICATE}/;
                 s/(dataone\.nodeType=).*/\1cn/;
