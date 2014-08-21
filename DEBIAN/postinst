@@ -195,6 +195,7 @@ case "${ACTION}" in
                 s/(dataone\.nodeType=).*/\1cn/;
                 s/(dataone\.nodeId=).*/\1${NODE_ID}/;
                 s/(database\.usexmlindex=).*/\1false/;
+                s/(dbquery\.enabledEngines=).*/\1solr/;
                 s/(#)(dataone\.hazelcast\.configFilePath=\/etc\/dataone\/storage\/hazelcast\.xml)/\2/;"\
                 ${TOMCAT_HOME}/webapps/metacat/WEB-INF/metacat.properties
         
