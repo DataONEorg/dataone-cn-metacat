@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="104" start="0" total="104" 
+<d1:objectFormatList count="106" start="0" total="106" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -539,6 +539,20 @@
   <objectFormat>
     <formatId>-//ecoinformatics.org//eml-software-2.0.0beta6//EN</formatId>
     <formatName>Ecological Metadata Language, Software module, version 2.0.0beta6</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- See http://www.ddialliance.org/Specification/DDI-Codebook/2.5 -->
+    <!-- XSD: http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd -->
+    <formatId>ddi:codebook:2_5</formatId>
+    <formatName>Data Documentation Initiative, Codebook version 2.5</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- See http://www.ddialliance.org/Specification/DDI-Codebook/2.1 -->
+    <!-- XSD: http://www.ddialliance.org/Specification/DDI-Codebook/2.1/XMLSchema/Version2-1.xsd -->
+    <formatId>http://www.icpsr.umich.edu/DDI</formatId>
+    <formatName>Data Documentation Initiative, Codebook version 2.1</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
 </d1:objectFormatList>
