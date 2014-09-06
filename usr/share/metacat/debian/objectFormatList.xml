@@ -555,4 +555,10 @@
     <formatName>Data Documentation Initiative, Codebook version 2.1</formatName>
     <formatType>METADATA</formatType>
   </objectFormat>
+  <objectFormat>
+    <!-- See http://purl.org/ornl/schema/mercury/terms/v1.0 -->
+    <formatId>http://purl.org/ornl/schema/mercury/terms/v1.0</formatId>
+    <formatName>Oak Ridge National Lab Mercury Metadata version 1.0</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
 </d1:objectFormatList>
