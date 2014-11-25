@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="107" start="0" total="107" 
+<d1:objectFormatList count="110" start="0" total="110" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -560,5 +560,25 @@
     <formatId>http://purl.org/ornl/schema/mercury/terms/v1.0</formatId>
     <formatName>Oak Ridge National Lab Mercury Metadata version 1.0</formatName>
     <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <formatId>http://datacite.org/schema/kernel-3.0</formatId>
+    <formatName>DataCite Metadata Schema version 3.0</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <formatId>http://datacite.org/schema/kernel-3.1</formatId>
+    <formatName>DataCite Metadata Schema version 3.1</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <formatId>info:lc/xmlns/dcx-v1</formatId>
+    <formatName>Library of Congress Dublin Core Extended v1</formatName>
+    <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <formatId>http://www.nexml.org/2009</formatId>
+  	<formatName>NeXML</formatName>
+    <formatType>DATA</formatType>
   </objectFormat>
 </d1:objectFormatList>
