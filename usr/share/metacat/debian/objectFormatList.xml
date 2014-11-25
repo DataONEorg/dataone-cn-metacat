@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="110" start="0" total="110" 
+<d1:objectFormatList count="111" start="0" total="111" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -578,7 +578,7 @@
   </objectFormat>
   <objectFormat>
     <formatId>http://www.nexml.org/2009</formatId>
-  	<formatName>NeXML</formatName>
+  	<formatName>NeXML 2009</formatName>
     <formatType>DATA</formatType>
   </objectFormat>
 </d1:objectFormatList>
