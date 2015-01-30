@@ -98,12 +98,12 @@
   <objectFormat>
     <formatId>netCDF-3</formatId>
     <formatName>Network Common Data Format, version 3</formatName>
-    <formatType>METADATA</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>netCDF-4</formatId>
     <formatName>Network Common Data Format, version 4</formatName>
-    <formatType>METADATA</formatType>
+    <formatType>DATA</formatType>
   </objectFormat>
   <objectFormat>
     <formatId>text/plain</formatId>
