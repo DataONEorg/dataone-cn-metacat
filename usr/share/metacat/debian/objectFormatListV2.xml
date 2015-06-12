@@ -789,4 +789,11 @@
     <mediaType name="text/xml" />
     <extension>xml</extension>
   </objectFormat>
+  <objectFormat>
+    <formatId>http://docs.annotatorjs.org/en/v1.2.x/annotation-format.html</formatId>
+  	<formatName>AnnotatorJS 1.2.x Annotation model</formatName>
+    <formatType>RESOURCE</formatType>
+    <mediaType name="application/json" />
+    <extension>json</extension>
+  </objectFormat>
 </d1v2:objectFormatList>
