@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1:objectFormatList count="109" start="0" total="109" 
+<d1:objectFormatList count="110" start="0" total="110" 
     xmlns:d1="http://ns.dataone.org/service/types/v1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v1 dataoneTypes.xsd">
@@ -570,5 +570,10 @@
     <formatId>http://ns.dataone.org/metadata/schema/onedcx/v1.0</formatId>
   	<formatName>DataONE Dublin Core Extended v1.0</formatName>
     <formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <formatId>http://www.isotc211.org/2005/gmd</formatId>
+	<formatName>Geographic MetaData (GMD) Extensible Markup Language</formatName>
+	<formatType>METADATA</formatType>
   </objectFormat>
 </d1:objectFormatList>

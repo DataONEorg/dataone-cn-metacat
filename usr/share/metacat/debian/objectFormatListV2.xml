@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1v2:objectFormatList count="109" start="0" total="109" 
+<d1v2:objectFormatList count="111" start="0" total="111" 
     xmlns:d1v2="http://ns.dataone.org/service/types/v2.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v2.0 dataoneTypes_v2.0.xsd">
@@ -795,5 +795,12 @@
     <formatType>RESOURCE</formatType>
     <mediaType name="application/json" />
     <extension>json</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>http://www.isotc211.org/2005/gmd</formatId>
+	<formatName>Geographic MetaData (GMD) Extensible Markup Language</formatName>
+	<formatType>METADATA</formatType>
+	<mediaType>text/xml</mediaType>
+	<extension>xml</extension>
   </objectFormat>
 </d1v2:objectFormatList>
