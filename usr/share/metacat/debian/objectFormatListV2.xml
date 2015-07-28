@@ -800,7 +800,7 @@
     <formatId>http://www.isotc211.org/2005/gmd</formatId>
 	<formatName>Geographic MetaData (GMD) Extensible Markup Language</formatName>
 	<formatType>METADATA</formatType>
-	<mediaType>text/xml</mediaType>
+	<mediaType name="text/xml" />
 	<extension>xml</extension>
   </objectFormat>
 </d1v2:objectFormatList>
