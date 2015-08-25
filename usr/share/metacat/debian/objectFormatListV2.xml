@@ -803,4 +803,10 @@
 	<mediaType name="text/xml" />
 	<extension>xml</extension>
   </objectFormat>
+  <objectFormat>
+    <!-- See https://tools.ietf.org/html/draft-kunze-bagit-11 -->
+    <formatId>application/bagit-097</formatId>
+	<formatName>BagIt File Packaging Format Version 0.97</formatName>
+	<formatType>DATA</formatType>
+  </objectFormat>
 </d1v2:objectFormatList>
