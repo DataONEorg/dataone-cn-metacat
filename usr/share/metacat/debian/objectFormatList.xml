@@ -572,8 +572,19 @@
     <formatType>METADATA</formatType>
   </objectFormat>
   <objectFormat>
+    <formatId>http://docs.annotatorjs.org/en/v1.2.x/annotation-format.html</formatId>
+  	<formatName>AnnotatorJS 1.2.x Annotation model</formatName>
+    <formatType>RESOURCE</formatType>
+  </objectFormat>
+  <objectFormat>
     <formatId>http://www.isotc211.org/2005/gmd</formatId>
 	<formatName>Geographic MetaData (GMD) Extensible Markup Language</formatName>
 	<formatType>METADATA</formatType>
+  </objectFormat>
+  <objectFormat>
+    <!-- See https://tools.ietf.org/html/draft-kunze-bagit-11 -->
+    <formatId>application/bagit-097</formatId>
+	<formatName>BagIt File Packaging Format Version 0.97</formatName>
+	<formatType>DATA</formatType>
   </objectFormat>
 </d1:objectFormatList>
