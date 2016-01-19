@@ -295,13 +295,13 @@ case "${ACTION}" in
         ## postgresql.conf  max_connections = 400
         let MAX_CONNECTIONS=$(egrep "max_connections *=" ${PG_CONF}/postgresql.conf | cut -d# -f1 | cut -d= -f2 | tr -d " ")
         if [ ${MAX_CONNECTIONS} -ne 400 ]; then
-            sed -i.bak  's/\(max_connections\s*\=\s*\)[\d]+/\1 400/;' ${PG_CONF}/postgresql.conf
+            sed -i.bak  's/\(max_connections\s*\=\s*\).*/\1 400/;' ${PG_CONF}/postgresql.conf
         fi
         
         ## postgresql.conf shared_buffers = 2GB
         SHARED_BUFFERS=$(egrep "shared_buffers *=" ${PG_CONF}/postgresql.conf | cut -d= -f2 | cut -d# -f1 | tr -d " ")
         if [[ "" != "2048MB" ]]; then
-            sed -i.bak  's/\(shared_buffers\s*\=\s*\)[\d]+MB/\1 2048MB/;' ${PG_CONF}/postgresql.conf
+            sed -i.bak  's/\(shared_buffers\s*\=\s*\).*/\1 2048MB/;' ${PG_CONF}/postgresql.conf
         fi
         
         ## Get the amount of ram 
