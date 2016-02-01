@@ -173,6 +173,7 @@ case "${ACTION}" in
         
         # change a lot of properties for this configuration
         sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat7\/webapps/;
+                s/(server\.httpPort=).*/\1443/;
                 s/(application\.backupDir=).*/\1\/var\/metacat\/\.metacat/;
                 s/(application\.context=).*/\1metacat/;
                 s/(application\.debugOutputFile=).*/\1\/var\/metacat\/temporary\/metacat.debug/;
