@@ -323,7 +323,13 @@ case "${ACTION}" in
         MAX_CONNECTIONS=$(egrep "max_connections *=" ${PG_CONF}/postgresql.conf | cut -d# -f1 | cut -d= -f2 | tr -d " ")
         WORK_MEM=$(expr ${MEMORY_SIZE} / ${WORK_MEM_FACTOR} / ${MAX_CONNECTIONS})
         sed -i.bak "s/^[# ]*work_mem\s*=.*/work_mem = ${WORK_MEM}MB/" ${PG_CONF}/postgresql.conf
-        
+
+        ## http://www.postgresql.org/docs/9.1/static/kernel-resources.html
+        ## With postgres 9.3 and higher the required amount of 
+        ## of shared memory is lower, once upgrade to ubuntu 14.04
+        ## the shared memory problem should be re-evaluated
+        ## http://www.postgresql.org/docs/9.3/static/kernel-resources.html  
+
         ## with higher memory requirements for postgresql, increase kernel.shmmax to 3GB          
         SHMMAX=$(egrep "kernel\.shmmax=" ${SYSCTL_CONF}  | cut -d= -f2 | cut -d# -f1 | tr -d " ")
         if [[ "${SHMMAX}" != "3221225472" ]]; then
