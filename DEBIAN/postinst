@@ -330,13 +330,18 @@ case "${ACTION}" in
         ## the shared memory problem should be re-evaluated
         ## http://www.postgresql.org/docs/9.3/static/kernel-resources.html  
 
-        ## with higher memory requirements for postgresql, increase kernel.shmmax to 3GB          
-        SHMMAX=$(egrep "kernel\.shmmax=" ${SYSCTL_CONF}  | cut -d= -f2 | cut -d# -f1 | tr -d " ")
-        if [[ "${SHMMAX}" != "3221225472" ]]; then
-            sed -i.bak  's/.*\(kernel\.shmmax\)\=.*/\1=3221225472/;' ${SYSCTL_CONF}
-            sysctl -w kernel.shmmax=3221225472
-        fi
-        
+        ## with higher memory requirements for postgresql, increase kernel.shmmax to 3GB
+        if  (egrep -q 'kernel\.shmmax=' ${SYSCTL_CONF}); then          
+			SHMMAX=$(egrep "kernel\.shmmax=" ${SYSCTL_CONF}  | cut -d= -f2 | cut -d# -f1 | tr -d " ")
+			if [[ "${SHMMAX}" != "3221225472" ]]; then
+				sed -i.bak  's/.*\(kernel\.shmmax\)\=.*/\1=3221225472/;' ${SYSCTL_CONF}
+				sysctl -w kernel.shmmax=3221225472
+			fi
+		else
+			echo "kernel.shmmax=3221225472" >> ${SYSCTL_CONF}
+			sysctl -p
+		fi
+
         ## create metacat schema and user
         log "Creating metacat database schema"
         su ${PG_USER} -c "createdb metacat"
