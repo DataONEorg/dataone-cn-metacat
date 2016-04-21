@@ -347,7 +347,7 @@
     <formatName>Microsoft Excel OpenXML</formatName>
     <formatType>DATA</formatType>
     <mediaType name="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-    <extension>xltx</extension>
+    <extension>xlsx</extension>
   </objectFormat>
   <objectFormat>
     <formatId>application/vnd.openxmlformats-officedocument.wordprocessingml.document</formatId>
