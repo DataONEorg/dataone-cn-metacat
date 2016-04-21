@@ -592,4 +592,9 @@
 	<formatName>BagIt File Packaging Format Version 0.97</formatName>
 	<formatType>DATA</formatType>
   </objectFormat>
+   <objectFormat>
+    <formatId>text/tsv</formatId>
+    <formatName>Tab Separated Values Text</formatName>
+    <formatType>DATA</formatType>
+  </objectFormat>
 </d1:objectFormatList>
