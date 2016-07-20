@@ -36,6 +36,7 @@ TOMCAT_USER=tomcat7
 TOMCAT_HOME=/var/lib/tomcat7
 APACHE_CONF=/etc/apache2
 JK_CONF=metacat_jk.conf
+METACAT_PROXY=metacat_proxy
 
 SYSCTL_CONF=/etc/sysctl.conf
 PG=postgresql
@@ -262,6 +263,24 @@ case "${ACTION}" in
         ## Stop apache
         log "Stopping Apache"
         /etc/init.d/apache2 stop
+        
+        ## copy in metacat_proxy configuration file
+        
+        if [ -e ${APACHE_CONF}/conf.d/${METACAT_PROXY} ]
+        then 
+          PROXY_DIFF=$(diff ${SCRIPT_DIR}/${METACAT_PROXY} ${APACHE_CONF}/conf.d/${METACAT_PROXY})
+          if [ "${PROXY_DIFF}" != "" ]; then
+             if [ ! -e ${APACHE_CONF}/conf.d.bak ]
+             then
+	       mkdir ${APACHE_CONF}/conf.d.bak
+             endif 
+            log "Backing up ${APACHE_CONF}/conf.d/${METACAT_PROXY} to ${APACHE_CONF}/conf.d.bak/${METACAT_PROXY}.${LONG_DATE}"
+            mv ${APACHE_CONF}/conf.d/${METACAT_PROXY} ${APACHE_CONF}/conf.d.bak/${METACAT_PROXY}.${LONG_DATE}
+          fi
+        fi
+        log "Copying ${METACAT_PROXY} site file to ${APACHE_CONF}/conf.d/"
+        cp ${SCRIPT_DIR}/${METACAT_PROXY} ${APACHE_CONF}/conf.d/
+        
         
         ## copy in jk mount configuration file
         
