@@ -1,0 +1,30 @@
+<IfModule rewrite_module>
+	RewriteEngine On
+	
+	RewriteCond %{REQUEST_METHOD} GET
+	RewriteCond %{REQUEST_URI} ^(/cn/v[12]/(?:formats|object|views)/?)$
+	RewriteRule ^/cn/v[12]/(?:formats|object|views)/?$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+	
+	RewriteCond %{REQUEST_METHOD} GET
+	RewriteCond %{REQUEST_URI} ^(/cn/v[12]/(?:checksum|formats|isAuthorized|meta|object|replicaAuthorizations|views)/.+)$
+	RewriteRule ^/cn/v[12]/(?:checksum|formats|isAuthorized|meta|object|replicaAuthorizations|views)/.+$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+	
+	RewriteCond %{REQUEST_METHOD} POST
+	RewriteCond %{REQUEST_URI} ^(/cn/v[12]/(?:meta|object)/?)$
+	RewriteRule ^/cn/v[12]/(?:meta|object)/?$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+	
+	RewriteCond %{REQUEST_METHOD} PUT
+	RewriteCond %{REQUEST_URI} ^(/cn/v2/meta/?)$
+	RewriteRule ^/cn/v2/meta/?$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+	
+	RewriteCond %{REQUEST_METHOD} PUT
+	RewriteCond %{REQUEST_URI} ^(/cn/v[12]/(?:accessRules|archive|obsoletedBy|owner|removeReplicaMetadata|replicaMetadata|replicaNotifications|replicaPolicies)/.+)$
+	RewriteRule ^/cn/v[12]/(?:meta|object)/?$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+	
+	RewriteCond %{REQUEST_METHOD} DELETE [OR]
+	RewriteCond %{REQUEST_METHOD} HEAD 
+	RewriteCond %{REQUEST_URI} ^(/cn/v[12]/object/.+)$
+	RewriteRule ^/cn/v[12]/object/.+$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+
+</IfModule>
+
