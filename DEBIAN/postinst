@@ -273,7 +273,7 @@ case "${ACTION}" in
              if [ ! -e ${APACHE_CONF}/conf.d.bak ]
              then
 	       mkdir ${APACHE_CONF}/conf.d.bak
-             endif 
+             fi 
             log "Backing up ${APACHE_CONF}/conf.d/${METACAT_PROXY} to ${APACHE_CONF}/conf.d.bak/${METACAT_PROXY}.${LONG_DATE}"
             mv ${APACHE_CONF}/conf.d/${METACAT_PROXY} ${APACHE_CONF}/conf.d.bak/${METACAT_PROXY}.${LONG_DATE}
           fi
