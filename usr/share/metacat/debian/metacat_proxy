@@ -5,8 +5,8 @@ ProxyPassMatch "^/(cn/v[12]/(?:checksum|formats|isAuthorized|meta|object|replica
 	RewriteEngine On
 	
 	RewriteCond %{REQUEST_METHOD} PUT
-	RewriteCond %{REQUEST_URI} ^(/cn/v[12]/(?:accessRules|archive|obsoletedBy|owner|removeReplicaMetadata|replicaMetadata|replicaNotifications|replicaPolicies)/.+)$
-	RewriteRule ^/cn/v[12]/(?:meta|object)/?$  ajp://localhost:8009/metacat/d1%1 [QSA,P,L]
+	RewriteCond %{REQUEST_URI} ^/(cn/v[12]/(?:accessRules|archive|obsoletedBy|owner|removeReplicaMetadata|replicaMetadata|replicaNotifications|replicaPolicies)/.+)$
+	RewriteRule ^/cn/v[12]/(?:accessRules|archive|obsoletedBy|owner|removeReplicaMetadata|replicaMetadata|replicaNotifications|replicaPolicies)/.+$ ajp://localhost:8009/metacat/d1/%1 [QSA,P,L]
 	
 </IfModule>
 
