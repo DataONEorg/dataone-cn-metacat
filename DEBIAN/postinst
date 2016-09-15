@@ -39,9 +39,15 @@ JK_CONF=metacat_jk.conf
 METACAT_PROXY=metacat_proxy
 
 SYSCTL_CONF=/etc/sysctl.conf
+
 PG=postgresql
-PG_CONF=/etc/postgresql/9.1/main
 PG_USER=postgres
+if [ -e "/etc/postgresql/9.3/main" ]; then
+    PG_CONF=/etc/postgresql/9.3/main
+else
+    PG_CONF=/etc/postgresql/9.1/main
+fi
+
 DB_USER=metacat
 DB_PASS=metacat
 SOURCE_DIR=/usr/share/metacat

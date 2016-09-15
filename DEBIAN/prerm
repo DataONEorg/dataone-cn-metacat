@@ -13,7 +13,6 @@ APACHE_CONF=/etc/apache2
 METACAT_VAR=/var/metacat
 SOURCE_DIR=/usr/share/metacat
 PG=postgresql
-PG_CONF=/etc/postgresql/9.1/main
 
 ## drop metacat schema and user
 #echo "Dropping metacat database"
