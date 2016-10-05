@@ -48,6 +48,9 @@ rm -rf /etc/dataone/storage
 /etc/init.d/tomcat7 start
 /etc/init.d/apache2 start
 
+# disable the metacat_proxy configurations
+a2disconf metacat_proxy
+
 
 ## Update DateONE Version Info Doc
 if [ -e /usr/share/dataone-cn-version-tool/dataone-cn-version-tool.jar ] ; then

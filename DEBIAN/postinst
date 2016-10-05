@@ -272,20 +272,22 @@ case "${ACTION}" in
         
         ## copy in metacat_proxy configuration file
         
-        if [ -e ${APACHE_CONF}/conf.d/${METACAT_PROXY} ]
+        if [ -e ${APACHE_CONF}/conf-available/${METACAT_PROXY}.conf ]
         then 
-          PROXY_DIFF=$(diff ${SCRIPT_DIR}/${METACAT_PROXY} ${APACHE_CONF}/conf.d/${METACAT_PROXY})
+          PROXY_DIFF=$(diff ${SCRIPT_DIR}/${METACAT_PROXY}.conf ${APACHE_CONF}/conf-available/${METACAT_PROXY}.conf)
           if [ "${PROXY_DIFF}" != "" ]; then
-             if [ ! -e ${APACHE_CONF}/conf.d.bak ]
+             if [ ! -e ${APACHE_CONF}/conf-available.bak ]
              then
-	       mkdir ${APACHE_CONF}/conf.d.bak
+	       mkdir ${APACHE_CONF}/conf-available.bak
              fi 
-            log "Backing up ${APACHE_CONF}/conf.d/${METACAT_PROXY} to ${APACHE_CONF}/conf.d.bak/${METACAT_PROXY}.${LONG_DATE}"
-            mv ${APACHE_CONF}/conf.d/${METACAT_PROXY} ${APACHE_CONF}/conf.d.bak/${METACAT_PROXY}.${LONG_DATE}
+            log "Backing up ${APACHE_CONF}/conf-available/${METACAT_PROXY}.conf to ${APACHE_CONF}/conf-available.bak/${METACAT_PROXY}.conf.${LONG_DATE}"
+            mv ${APACHE_CONF}/conf-available/${METACAT_PROXY}.conf ${APACHE_CONF}/conf-available.bak/${METACAT_PROXY}.conf.${LONG_DATE}
           fi
         fi
-        log "Copying ${METACAT_PROXY} site file to ${APACHE_CONF}/conf.d/"
-        cp ${SCRIPT_DIR}/${METACAT_PROXY} ${APACHE_CONF}/conf.d/
+        log "Copying ${METACAT_PROXY}.conf file to ${APACHE_CONF}/conf-available/"
+        cp ${SCRIPT_DIR}/${METACAT_PROXY}.conf ${APACHE_CONF}/conf-available/
+        # enable the config
+        a2enconf ${METACAT_PROXY}
         
         
         ## copy in jk mount configuration file
