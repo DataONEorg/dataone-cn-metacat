@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1v2:objectFormatList count="114" start="0" total="114" 
+<d1v2:objectFormatList count="117" start="0" total="117" 
     xmlns:d1v2="http://ns.dataone.org/service/types/v2.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v2.0 dataoneTypes_v2.0.xsd">
@@ -431,9 +431,9 @@
   </objectFormat>
   <objectFormat>
     <formatId>application/x-python</formatId>
-    <formatName>Python Script</formatName>
+    <formatName>Python programming language script</formatName>
     <formatType>DATA</formatType>
-    <mediaType name="application/x-python" />
+    <mediaType name="text/x-python" />
     <extension>py</extension>
   </objectFormat>
   <objectFormat>
@@ -822,5 +822,26 @@
     <formatType>DATA</formatType>
     <mediaType name="text/tab-separated-values"/>
     <extension>tsv</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/R</formatId> 
+    <formatName>R programming language script</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="text/x-rsrc"/>
+    <extension>R</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/MATLAB</formatId> 
+    <formatName>MATLAB programming language script</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="text/x-matlab"/>
+    <extension>m</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/SAS</formatId> 
+    <formatName>SAS programming language script</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="text/x-sas"/>
+    <extension>sas</extension>
   </objectFormat>
 </d1v2:objectFormatList>
