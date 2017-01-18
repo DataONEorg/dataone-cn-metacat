@@ -427,7 +427,7 @@
     <formatName>GZIP Format</formatName>
     <formatType>DATA</formatType>
     <mediaType name="application/x-gzip" />
-    <extension>zip</extension>
+    <extension>gz</extension>
   </objectFormat>
   <objectFormat>
     <formatId>application/x-python</formatId>
