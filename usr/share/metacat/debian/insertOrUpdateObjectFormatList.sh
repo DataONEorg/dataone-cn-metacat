@@ -122,19 +122,19 @@ echo "Using action: $action";
 # update the object format list
 response=$($curlCmd \
 -d "action=$action" \
--d "docid=$newDocid" \
--d "doctext=$doctext" \
--d "sessionid=$sessionId" $baseURL);
+--data-urlencode "docid=$newDocid" \
+--data-urlencode "doctext=$doctext" \
+--data-urlencode "sessionid=$sessionId" $baseURL);
 echo $response;
 
 # set public/read access to the document
 action="setaccess";
 response=$($curlCmd \
 -d "action=$action" \
--d "docid=$newDocid" \
--d "principal=public" \
+--data-urlencode "docid=$newDocid" \
+--data-urlencode "principal=public" \
 -d "permission=read" \
 -d "permType=allow" \
 -d "permOrder=allowFirst" \
--d "sessionid=$sessionId" $baseURL);
+--data-urlencode "sessionid=$sessionId" $baseURL);
 echo $response;
