@@ -509,13 +509,6 @@
     <extension>kml</extension>
   </objectFormat>
   <objectFormat>
-    <formatId>application/vnd.google-earth.kmz</formatId> 
-    <formatName>Google Earth Keyhole Markup Language (KML) Compressed archive</formatName>
-    <formatType>DATA</formatType>
-    <mediaType name="application/vnd.google-earth.kmz"/>
-    <extension>kmz</extension>
-  </objectFormat>
-  <objectFormat>
     <!-- http://en.wikipedia.org/wiki/RAR -->
     <formatId>application/x-rar-compressed</formatId>
     <formatName>Roshal Archive File</formatName>
@@ -845,38 +838,6 @@
     <extension>R</extension>
   </objectFormat>
   <objectFormat>
-    <!-- https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html -->
-    <formatId>application/MATLAB-v7.3</formatId> 
-    <formatName>Mathworks MATLAB version 7.3 (R2006b or later) binary file - HDF5 compatible</formatName>
-    <formatType>DATA</formatType>
-    <mediaType name="application/octet-stream"/>
-    <extension>mat</extension>
-  </objectFormat>
-  <objectFormat>
-    <!-- https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html -->
-    <formatId>application/MATLAB-v7</formatId> 
-    <formatName>Mathworks MATLAB version 7 (R14 or later) binary file</formatName>
-    <formatType>DATA</formatType>
-    <mediaType name="application/octet-stream"/>
-    <extension>mat</extension>
-  </objectFormat>
-  <objectFormat>
-    <!-- https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html -->
-    <formatId>application/MATLAB-v6</formatId> 
-    <formatName>Mathworks MATLAB version 6 (R8 or later) binary file</formatName>
-    <formatType>DATA</formatType>
-    <mediaType name="application/octet-stream"/>
-    <extension>mat</extension>
-  </objectFormat>
-  <objectFormat>
-    <!-- https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html -->
-    <formatId>application/MATLAB-v4</formatId> 
-    <formatName>Mathworks MATLAB version 4 binary file</formatName>
-    <formatType>DATA</formatType>
-    <mediaType name="application/octet-stream"/>
-    <extension>mat</extension>
-  </objectFormat>
-  <objectFormat>
     <formatId>application/MATLAB</formatId> 
     <formatName>MATLAB programming language script</formatName>
     <formatType>DATA</formatType>
@@ -891,36 +852,70 @@
     <extension>sas</extension>
   </objectFormat>
   <objectFormat>
-    <formatId>application/json</formatId> 
+    <formatId>application/vnd.google-earth.kmz</formatId>
+    <formatName>Google Earth Keyhole Markup Language (KML) Compressed archive</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="application/vnd.google-earth.kmz"/>
+    <extension>kmz</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/MATLAB-v7.3</formatId>
+    <formatName>Mathworks MATLAB version 7.3 (R2006b or later) binary file - HDF5 compatible</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="application/octet-stream"/>
+    <extension>mat</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/MATLAB-v7</formatId>
+    <formatName>Mathworks MATLAB version 7 (R14 or later) binary file</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="application/octet-stream"/>
+    <extension>mat</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/MATLAB-v6</formatId>
+    <formatName>Mathworks MATLAB version 6 (R8 or later) binary file</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="application/octet-stream"/>
+    <extension>mat</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/MATLAB-v4</formatId>
+    <formatName>Mathworks MATLAB version 4 binary file</formatName>
+    <formatType>DATA</formatType>
+    <mediaType name="application/octet-stream"/>
+    <extension>mat</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>application/json</formatId>
     <formatName>JavaScript Object Notation (JSON) file</formatName>
     <formatType>DATA</formatType>
     <mediaType name="application/json"/>
     <extension>json</extension>
   </objectFormat>
   <objectFormat>
-    <formatId>application/json-ld</formatId> 
+    <formatId>application/json-ld</formatId>
     <formatName>JavaScript Object Notation (JSON) Linked Data file</formatName>
     <formatType>DATA</formatType>
     <mediaType name="application/ld+json"/>
     <extension>json</extension>
   </objectFormat>
   <objectFormat>
-    <formatId>text/markdown</formatId> 
+    <formatId>text/markdown</formatId>
     <formatName>Markdown file (pandoc markdown compatible)</formatName>
     <formatType>DATA</formatType>
     <mediaType name="text/markdown"/>
     <extension>md</extension>
   </objectFormat>
   <objectFormat>
-    <formatId>text/x-rmarkdown</formatId> 
+    <formatId>text/x-rmarkdown</formatId>
     <formatName>R Markdown file (pandoc markdown compatible)</formatName>
     <formatType>DATA</formatType>
     <mediaType name="text/markdown"/>
     <extension>Rmd</extension>
   </objectFormat>
   <objectFormat>
-    <!-- See https://en.wikipedia.org/wiki/Raw_image_format, format not standardized across sensors -->
-    <formatId>image/x-raw</formatId> 
+    <formatId>image/x-raw</formatId>
     <formatName>RAW digital sensor image file</formatName>
     <formatType>DATA</formatType>
     <mediaType name="application/octet-stream"/>
