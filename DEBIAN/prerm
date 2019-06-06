@@ -4,11 +4,11 @@ echo "dataone-cn-metacat.prerm called with action: $1, version: $2"
 
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
-/etc/init.d/tomcat7 stop
+/etc/init.d/tomcat8 stop
 /etc/init.d/apache2 stop
 
-TOMCAT_USER=tomcat7
-TOMCAT_HOME=/var/lib/tomcat7
+TOMCAT_USER=tomcat8
+TOMCAT_HOME=/var/lib/tomcat8
 APACHE_CONF=/etc/apache2
 METACAT_VAR=/var/metacat
 SOURCE_DIR=/usr/share/metacat
@@ -45,7 +45,7 @@ rm -f ${TOMCAT_HOME}/conf/policy.d/51metacat.policy
 
 rm -rf /etc/dataone/storage
 
-/etc/init.d/tomcat7 start
+/etc/init.d/tomcat8 start
 /etc/init.d/apache2 start
 
 # disable the metacat_proxy configurations

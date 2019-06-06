@@ -11,7 +11,7 @@ fi
 D1_LOG_DIR=/var/log/dataone
 if [ ! -e ${D1_LOG_DIR} ]; then
     mkdir -p ${D1_LOG_DIR}
-    chown tomcat7:tomcat7 ${D1_LOG_DIR}
+    chown tomcat8:tomcat8 ${D1_LOG_DIR}
 fi
 
 # functions to echo to STDERR or the install log instead of STDOUT
@@ -31,9 +31,9 @@ NEW_VERSION=${2}
 
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
-TOMCAT=tomcat7
-TOMCAT_USER=tomcat7
-TOMCAT_HOME=/var/lib/tomcat7
+TOMCAT=tomcat8
+TOMCAT_USER=tomcat8
+TOMCAT_HOME=/var/lib/tomcat8
 APACHE_CONF=/etc/apache2
 JK_CONF=metacat_jk.conf
 METACAT_PROXY=metacat_proxy
@@ -42,10 +42,10 @@ SYSCTL_CONF=/etc/sysctl.conf
 
 PG=postgresql
 PG_USER=postgres
-if [ -e "/etc/postgresql/9.3/main" ]; then
-    PG_CONF=/etc/postgresql/9.3/main
+if [ -e "/etc/postgresql/10/main" ]; then
+    PG_CONF=/etc/postgresql/10/main
 else
-    PG_CONF=/etc/postgresql/9.1/main
+    PG_CONF=/etc/postgresql/9.3/main
 fi
 
 DB_USER=metacat
@@ -179,7 +179,7 @@ case "${ACTION}" in
         CN_ROUTER_HOSTNAME=${RET}
         
         # change a lot of properties for this configuration
-        sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat7\/webapps/;
+        sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat8\/webapps/;
                 s/(server\.httpPort=).*/\1443/;
                 s/(application\.backupDir=).*/\1\/var\/metacat\/\.metacat/;
                 s/(application\.context=).*/\1metacat/;
@@ -216,7 +216,7 @@ case "${ACTION}" in
         log "cd to $CURR_DIR"
         cd $CURR_DIR
         
-        # Ensure tomcat7 is in the ssl-cert group to read private keys
+        # Ensure tomcat8 is in the ssl-cert group to read private keys
         usermod -a -G ssl-cert ${TOMCAT_USER}
         
         chmod -R  +x ${TOMCAT_HOME}/webapps/metacat/cgi-bin
@@ -374,7 +374,7 @@ case "${ACTION}" in
         su ${PG_USER} -c "createdb metacat"
         
         log "Creating metacat user" 
-        su ${PG_USER} -c "psql -c \"CREATE USER ${DB_USER} WITH UNENCRYPTED PASSWORD '${DB_PASS}'\""
+        su ${PG_USER} -c "psql -c \"CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASS}'\""
         
         ## Restart the postgres db
         log "Restarting postgres database"
