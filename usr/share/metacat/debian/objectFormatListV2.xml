@@ -928,4 +928,11 @@
     <mediaType name="application/octet-stream"/>
     <extension>raw</extension>
   </objectFormat>
+  <objectFormat>
+    <formatId>http://www.openarchives.org/OAI/2.0/oai_dc/</formatId>
+    <formatName>OAI-PMH Dublin Core v2.0, with online related resource</formatName>
+    <formatType>METADATA</formatType>
+    <mediaType name="text/xml" />
+    <extension>xml</extension>
+  </objectFormat>
 </d1v2:objectFormatList>
