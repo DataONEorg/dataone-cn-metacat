@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/cn/xslt/dataone.types.v1.xsl"?>
-<d1v2:objectFormatList count="131" start="0" total="131" 
+<d1v2:objectFormatList count="132" start="0" total="132" 
     xmlns:d1v2="http://ns.dataone.org/service/types/v2.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ns.dataone.org/service/types/v2.0 dataoneTypes_v2.0.xsd">
@@ -28,6 +28,13 @@
   <objectFormat>
     <formatId>eml://ecoinformatics.org/eml-2.1.1</formatId>
     <formatName>Ecological Metadata Language, version 2.1.1</formatName>
+    <formatType>METADATA</formatType>
+    <mediaType name="text/xml"/>
+    <extension>xml</extension>
+  </objectFormat>
+  <objectFormat>
+    <formatId>https://eml.ecoinformatics.org/eml-2.2.0</formatId>
+    <formatName>Ecological Metadata Language, version 2.2.0</formatName>
     <formatType>METADATA</formatType>
     <mediaType name="text/xml"/>
     <extension>xml</extension>
