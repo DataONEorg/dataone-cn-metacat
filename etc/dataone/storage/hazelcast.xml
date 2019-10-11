@@ -65,9 +65,9 @@
     <keep-alive-seconds>60</keep-alive-seconds>
   </executor-service>
 
-  <!-- 
+  <!--
     The DataONE Storage Cluster distributed structures are define below. Note:
-    The hzIdentifiers set is created programmatically when Matacat's 
+    The hzIdentifiers set is created programmatically when Matacat's
     HazelcastService starts the cluster.  If it were configurable in this XML
     file, it would look something like the element below.  This is just added
     for documentation purposes.
@@ -96,7 +96,7 @@
       Any integer between 0 and Integer.MAX_VALUE. 0 means
       Integer.MAX_VALUE. Default is 0.
     -->
-    <max-size policy="cluster_wide_map_size">3000000</max-size>
+    <max-size policy="cluster_wide_map_size">50000</max-size>
     <!--
       When max. size is reached, specified percentage of
       the map will be evicted. Any integer between 0 and 100.
@@ -122,19 +122,19 @@
       hz.LATEST_UPDATE ; entry with the latest update wins.
     -->
     <merge-policy>hz.ADD_NEW_ENTRY</merge-policy>
-    
-    <!-- 
-      Use Metacat as the backing store for the System Metadata map, using 
+
+    <!--
+      Use Metacat as the backing store for the System Metadata map, using
       a write-through policy for fault tolerance.
      -->
     <map-store enabled="true">
       <class-name>edu.ucsb.nceas.metacat.dataone.hazelcast.SystemMetadataMap</class-name>
       <write-delay-seconds>0</write-delay-seconds>
     </map-store>
-    
+
     <!-- Allow reads from backup entry copies if the owner member can't -->
     <read-backup-data>false</read-backup-data>
-    
+
   </map>
 
   <map name="hzObjectPath">
@@ -184,8 +184,8 @@
       hz.LATEST_UPDATE ; entry with the latest update wins.
     -->
     <merge-policy>hz.ADD_NEW_ENTRY</merge-policy>
-    
-    <!-- 
+
+    <!--
       Use Metacat as the backing store for the ObjectPathMap
      -->
     <map-store enabled="true">
@@ -193,7 +193,7 @@
       <write-delay-seconds>0</write-delay-seconds>
     </map-store>
   </map>
-  
+
   <!-- for replicating Tomcat sessions -->
   <map name="d1PortalSessions">
     <backup-count>3</backup-count>
@@ -203,7 +203,7 @@
     <merge-policy>hz.ADD_NEW_ENTRY</merge-policy>
   </map>
 
-  <!-- Add your own map merge policy implementations here:   
+  <!-- Add your own map merge policy implementations here:
     <merge-policies>
       <map-merge-policy name="MY_MERGE_POLICY">
         <class-name>com.acme.MyOwnMergePolicy</class-name>
