@@ -211,7 +211,7 @@ case "${ACTION}" in
         
         # the CN has its own log4j configuration
         
-        cp ${SCRIPT_DIR}/log4j.properties ${TOMCAT_HOME}/webapps/metacat/WEB-INF/
+        cp ${SCRIPT_DIR}/log4j2.properties ${TOMCAT_HOME}/webapps/metacat/WEB-INF/classes
         chown -R ${TOMCAT_USER}:${TOMCAT_USER} ${TOMCAT_HOME}/webapps/metacat
         log "cd to $CURR_DIR"
         cd $CURR_DIR
