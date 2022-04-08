@@ -81,7 +81,7 @@
       then all entries of the map will be copied to another JVM for
       fail-safety. Valid numbers are 0 (no backup), 1, 2, 3.
     -->
-    <backup-count>3</backup-count>
+    <backup-count>2</backup-count>
     <!--
       Valid values are:
       NONE (no eviction),
@@ -143,7 +143,7 @@
       then all entries of the map will be copied to another JVM for
       fail-safety. Valid numbers are 0 (no backup), 1, 2, 3.
     -->
-    <backup-count>3</backup-count>
+    <backup-count>2</backup-count>
     <!--
       Valid values are:
       NONE (no eviction),
@@ -196,7 +196,7 @@
 
   <!-- for replicating Tomcat sessions -->
   <map name="d1PortalSessions">
-    <backup-count>3</backup-count>
+    <backup-count>2</backup-count>
     <eviction-policy>LRU</eviction-policy>
     <max-size policy="cluster_wide_map_size">0</max-size>
     <eviction-percentage>25</eviction-percentage>
