@@ -8,10 +8,22 @@ else
     exit 1
 fi
 
+TOMCAT=tomcat9
+TOMCAT_USER=tomcat
+TOMCAT_HOME=/var/lib/${tomcat9}
+APACHE_CONF=/etc/apache2
+JK_CONF=metacat_jk.conf
+METACAT_PROXY=metacat_proxy
+
+SYSCTL_CONF=/etc/sysctl.conf
+
+PG=postgresql
+PG_USER=postgres
+
 D1_LOG_DIR=/var/log/dataone
 if [ ! -e ${D1_LOG_DIR} ]; then
     mkdir -p ${D1_LOG_DIR}
-    chown tomcat8:tomcat8 ${D1_LOG_DIR}
+    chown ${TOMCAT_USER}:${TOMCAT_USER} ${D1_LOG_DIR}
 fi
 
 # functions to echo to STDERR or the install log instead of STDOUT
@@ -31,21 +43,11 @@ NEW_VERSION=${2}
 
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
-TOMCAT=tomcat8
-TOMCAT_USER=tomcat8
-TOMCAT_HOME=/var/lib/tomcat8
-APACHE_CONF=/etc/apache2
-JK_CONF=metacat_jk.conf
-METACAT_PROXY=metacat_proxy
 
-SYSCTL_CONF=/etc/sysctl.conf
-
-PG=postgresql
-PG_USER=postgres
-if [ -e "/etc/postgresql/10/main" ]; then
-    PG_CONF=/etc/postgresql/10/main
+if [ -e "/etc/postgresql/14/main" ]; then
+    PG_CONF=/etc/postgresql/14/main
 else
-    PG_CONF=/etc/postgresql/9.3/main
+    PG_CONF=/etc/postgresql/10/main
 fi
 
 DB_USER=metacat
@@ -179,7 +181,7 @@ case "${ACTION}" in
         CN_ROUTER_HOSTNAME=${RET}
         
         # change a lot of properties for this configuration
-        sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/tomcat8\/webapps/;
+        sed -i --regexp-extended "s/(application\.deployDir=).*/\1\/var\/lib\/${TOMCAT}\/webapps/;
                 s/(server\.httpPort=).*/\1443/;
                 s/(application\.backupDir=).*/\1\/var\/metacat\/\.metacat/;
                 s/(application\.context=).*/\1metacat/;
@@ -218,7 +220,7 @@ case "${ACTION}" in
         log "cd to $CURR_DIR"
         cd $CURR_DIR
         
-        # Ensure tomcat8 is in the ssl-cert group to read private keys
+        # Ensure tomcat is in the ssl-cert group to read private keys
         usermod -a -G ssl-cert ${TOMCAT_USER}
         
         chmod -R  +x ${TOMCAT_HOME}/webapps/metacat/cgi-bin
