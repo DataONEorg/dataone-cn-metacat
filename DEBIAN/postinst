@@ -10,7 +10,7 @@ fi
 
 TOMCAT=tomcat9
 TOMCAT_USER=tomcat
-TOMCAT_HOME=/var/lib/${tomcat9}
+TOMCAT_HOME=/var/lib/${TOMCAT}
 APACHE_CONF=/etc/apache2
 JK_CONF=metacat_jk.conf
 METACAT_PROXY=metacat_proxy
@@ -130,7 +130,7 @@ case "${ACTION}" in
         
         ## Stop tomcat
         log "Stopping Tomcat"
-        /etc/init.d/${TOMCAT} stop
+        systemctl stop ${TOMCAT}
         
         ## backup the old war file
         if [ -e ${TOMCAT_HOME}/webapps/metacat.war.current ]
