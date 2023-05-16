@@ -4,15 +4,16 @@ echo "dataone-cn-metacat.prerm called with action: $1, version: $2"
 
 LONG_DATE=`date +%Y%m%d%H%M%S`
 
-/etc/init.d/tomcat8 stop
-/etc/init.d/apache2 stop
-
-TOMCAT_USER=tomcat8
-TOMCAT_HOME=/var/lib/tomcat8
+TOMCAT=tomcat9
+TOMCAT_USER=tomcat
+TOMCAT_HOME=/var/lib/${TOMCAT}
 APACHE_CONF=/etc/apache2
 METACAT_VAR=/var/metacat
 SOURCE_DIR=/usr/share/metacat
 PG=postgresql
+
+systemctl stop ${TOMCAT}
+/etc/init.d/apache2 stop
 
 ## drop metacat schema and user
 #echo "Dropping metacat database"
@@ -45,7 +46,7 @@ rm -f ${TOMCAT_HOME}/conf/policy.d/51metacat.policy
 
 rm -rf /etc/dataone/storage
 
-/etc/init.d/tomcat8 start
+systemctl start ${TOMCAT}
 /etc/init.d/apache2 start
 
 # disable the metacat_proxy configurations
