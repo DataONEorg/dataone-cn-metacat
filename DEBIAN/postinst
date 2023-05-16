@@ -401,7 +401,7 @@ case "${ACTION}" in
         ## Start Tomcat
         log "starting Tomcat server"
         
-        /etc/init.d/${TOMCAT} start
+        systemctl start ${TOMCAT}
         
 
 		for IP in ${IPLIST[@]}
