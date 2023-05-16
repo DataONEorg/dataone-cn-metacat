@@ -255,7 +255,9 @@ case "${ACTION}" in
         ###############################################################################
         # Configure Tomcat
         ###############################################################################
-        
+        # fix an issue that tomcat9 doesn't work with metacat admin page
+        apt install libecj-java
+        ln -s /usr/share/java/ecj.jar /var/lib/tomcat9/lib
         
         # Configure the tomcat server
         #cp ${SCRIPT_DIR}/server.xml ${TOMCAT_HOME}/conf/
