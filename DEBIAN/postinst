@@ -267,6 +267,8 @@ case "${ACTION}" in
         # Add permissions needed by metacat and geoserver
         cp ${SCRIPT_DIR}/51metacat.policy ${TOMCAT_HOME}/conf/policy.d/
         
+        systemctl edit --full ${TOMCAT}.service
+        
         ###############################################################################
         # Configure Apache
         ###############################################################################
