@@ -267,7 +267,9 @@ case "${ACTION}" in
         # Add permissions needed by metacat and geoserver
         cp ${SCRIPT_DIR}/51metacat.policy ${TOMCAT_HOME}/conf/policy.d/
         
-        systemctl edit --full ${TOMCAT}.service
+        # Add the tomcat service file
+        cp ${SCRIPT_DIR}/${TOMCAT}.service /etc/systemd/system/.
+        systemctl daemon-reload
         
         ###############################################################################
         # Configure Apache
@@ -325,6 +327,9 @@ case "${ACTION}" in
         
           log "appending 'host metacat metacat 127.0.0.1 255.255.255.255 password' to ${PG_CONF}/pg_hba.conf"
           echo "host metacat metacat 127.0.0.1 255.255.255.255 password" >> ${PG_CONF}/pg_hba.conf
+          
+          log "commenting out the lines with the authorization method scram-sha-256 in ${PG_CONF}/pg_hba.conf"
+          sed -i '/^[^#].*scram-sha-256/ s/^/#/' ${PG_CONF}/pg_hba.conf
         fi
         
         ## postgresql.conf  max_connections = 400
